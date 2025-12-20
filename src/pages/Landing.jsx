@@ -215,8 +215,71 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Benefits Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-text-dark">
+              {t('benefits.title')}
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              {t('benefits.subtitle')}
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="card text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaShieldAlt className="text-green-600 text-2xl" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-text-dark">
+                {t('benefits.secure.title')}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                {t('benefits.secure.description')}
+              </p>
+            </div>
+
+            <div className="card text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaCheckCircle className="text-blue-600 text-2xl" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-text-dark">
+                {t('benefits.verified.title')}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                {t('benefits.verified.description')}
+              </p>
+            </div>
+
+            <div className="card text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaLock className="text-purple-600 text-2xl" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-text-dark">
+                {t('benefits.anonymous.title')}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                {t('benefits.anonymous.description')}
+              </p>
+            </div>
+
+            <div className="card text-center">
+              <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaChartLine className="text-teal-600 text-2xl" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-text-dark">
+                {t('benefits.transparent.title')}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                {t('benefits.transparent.description')}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Trust & Transparency Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-background to-gray-50">
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 text-text-dark">

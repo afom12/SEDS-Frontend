@@ -18,6 +18,26 @@
       "transparent": "Transparent tracking"
     }
   },
+  "benefits": {
+    "title": "Why Choose SEDS?",
+    "subtitle": "Everything you need to give and receive with confidence",
+    "secure": {
+      "title": "100% Secure",
+      "description": "Your information and donations are protected with bank-level security."
+    },
+    "verified": {
+      "title": "Fully Verified",
+      "description": "Every request is carefully reviewed to ensure genuine need."
+    },
+    "anonymous": {
+      "title": "Complete Privacy",
+      "description": "Donate or request help anonymously - your choice, your privacy."
+    },
+    "transparent": {
+      "title": "Full Transparency",
+      "description": "Track every donation from start to finish with complete visibility."
+    }
+  },
   "howItWorks": {
     "title": "How It Works",
     "subtitle": "Simple, transparent, and compassionate. Three easy steps to make a real difference.",
