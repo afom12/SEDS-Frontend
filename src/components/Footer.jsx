@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FaHeart, FaHandHoldingHeart } from 'react-icons/fa';
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <footer className="bg-white border-t border-gray-200 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -19,28 +21,27 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-gray-600 text-sm">
-              A transparent donation platform built on trust, dignity, and
-              respect. Give with confidence, help with compassion.
+              {t('footer.description')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-text-dark mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-text-dark mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/" className="text-gray-600 hover:text-primary transition-colors">
-                  Home
+                  {t('nav.home')}
                 </Link>
               </li>
               <li>
                 <Link to="/login" className="text-gray-600 hover:text-primary transition-colors">
-                  Login
+                  {t('nav.login')}
                 </Link>
               </li>
               <li>
                 <Link to="/register" className="text-gray-600 hover:text-primary transition-colors">
-                  Register
+                  {t('nav.getStarted')}
                 </Link>
               </li>
             </ul>
@@ -48,21 +49,21 @@ const Footer = () => {
 
           {/* About */}
           <div>
-            <h3 className="font-semibold text-text-dark mb-4">About</h3>
+            <h3 className="font-semibold text-text-dark mb-4">{t('footer.about')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="#" className="text-gray-600 hover:text-primary transition-colors">
-                  How It Works
+                  {t('footer.howItWorks')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-primary transition-colors">
-                  Trust & Transparency
+                  {t('footer.trustTransparency')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-primary transition-colors">
-                  Contact Us
+                  {t('footer.contactUs')}
                 </a>
               </li>
             </ul>
@@ -71,10 +72,10 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-gray-600">
-            © {new Date().getFullYear()} SEDS. All rights reserved.
+            {t('footer.copyright', { year: new Date().getFullYear() })}
           </p>
           <p className="text-sm text-gray-600 mt-2 md:mt-0 flex items-center">
-            Made with <FaHeart className="mx-1 text-red-500" /> for transparency
+            {t('footer.madeWith')} <FaHeart className="mx-1 text-red-500" /> {t('footer.forTransparency')}
           </p>
         </div>
       </div>

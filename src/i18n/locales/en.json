@@ -1,0 +1,102 @@
+{
+  "nav": {
+    "home": "Home",
+    "login": "Login",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "welcome": "Welcome, {{name}}"
+  },
+  "hero": {
+    "title": "Give with dignity. Help with trust.",
+    "subtitle": "A compassionate share & donor platform where every contribution matters, every need is verified, and every donation can be anonymous.",
+    "donateNow": "Donate Now",
+    "requestHelp": "Request Help",
+    "credibility": {
+      "verified": "Verified requests",
+      "anonymous": "Anonymous donations",
+      "transparent": "Transparent tracking"
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Simple, transparent, and compassionate. Three easy steps to make a real difference.",
+    "step1": {
+      "badge": "Step 1",
+      "title": "Verified Requests",
+      "description": "All donation requests are carefully reviewed and verified by our admin team to ensure legitimacy and genuine need."
+    },
+    "step2": {
+      "badge": "Step 2",
+      "title": "Anonymous Donation",
+      "description": "Donate anonymously or publicly. Your choice. No judgment, no pressure. Every contribution is valued equally."
+    },
+    "step3": {
+      "badge": "Step 3",
+      "title": "Tracked Delivery",
+      "description": "Follow your donation from start to finish. See exactly how your contribution helps and where it goes."
+    }
+  },
+  "whoWeServe": {
+    "title": "Who We Serve",
+    "subtitle": "A platform built for everyone who wants to share, give, and make a difference.",
+    "donor": {
+      "title": "Donor",
+      "description": "Make a difference with confidence. Browse verified requests, donate anonymously or publicly, and track your impact.",
+      "feature1": "Verified donation requests",
+      "feature2": "Anonymous donation option",
+      "feature3": "Full donation tracking"
+    },
+    "receiver": {
+      "title": "Receiver",
+      "description": "Submit your verified request for help. Receive support with dignity and respect, maintaining your privacy.",
+      "feature1": "Easy request submission",
+      "feature2": "Privacy protection",
+      "feature3": "Status tracking"
+    },
+    "admin": {
+      "title": "Admin",
+      "description": "Manage the platform with transparency. Verify requests, monitor donations, and ensure trust throughout the system.",
+      "feature1": "Request verification",
+      "feature2": "User management",
+      "feature3": "Analytics & reports"
+    }
+  },
+  "trust": {
+    "title": "Trust & Transparency",
+    "subtitle": "We believe in complete transparency. Every request is verified, every donation is tracked, and every process is open.",
+    "verified": {
+      "title": "Verified Requests Only",
+      "description": "All donation requests go through a thorough verification process. We ensure that every need is genuine and legitimate before it goes live."
+    },
+    "tracking": {
+      "title": "Full Tracking & Reporting",
+      "description": "See exactly where your donation goes. Track the entire journey from your contribution to the final delivery, with complete transparency."
+    },
+    "privacy": {
+      "title": "Privacy Protected",
+      "description": "Your privacy matters. Donate anonymously, request help discreetly, and maintain your dignity throughout the process."
+    },
+    "noJudgment": {
+      "title": "No Judgment Policy",
+      "description": "Whether you give $5 or $5000, every donation is equally valued. We create a judgment-free environment for both donors and receivers."
+    }
+  },
+  "cta": {
+    "title": "Ready to Make a Difference?",
+    "subtitle": "Join our community of donors and receivers. Together, we can create positive change with dignity and trust.",
+    "button": "Get Started Today"
+  },
+  "footer": {
+    "description": "A transparent donation platform built on trust, dignity, and respect. Give with confidence, help with compassion.",
+    "quickLinks": "Quick Links",
+    "about": "About",
+    "howItWorks": "How It Works",
+    "trustTransparency": "Trust & Transparency",
+    "contactUs": "Contact Us",
+    "copyright": "© {{year}} SEDS. All rights reserved.",
+    "madeWith": "Made with",
+    "forTransparency": "for transparency"
+  }
+}
+

@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { FaBars, FaTimes, FaHandHoldingHeart } from 'react-icons/fa';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem('i18nextLng', lng);
+  };
 
   const handleLogout = () => {
     logout();
@@ -45,16 +52,16 @@ const Navbar = () => {
                   to="/"
                   className="text-text hover:text-primary transition-colors"
                 >
-                  Home
+                  {t('nav.home')}
                 </Link>
                 <Link
                   to="/login"
                   className="text-text hover:text-primary transition-colors"
                 >
-                  Login
+                  {t('nav.login')}
                 </Link>
                 <Link to="/register" className="btn-primary">
-                  Get Started
+                  {t('nav.getStarted')}
                 </Link>
               </>
             ) : (
@@ -63,16 +70,40 @@ const Navbar = () => {
                   to={getDashboardLink()}
                   className="text-text hover:text-primary transition-colors"
                 >
-                  Dashboard
+                  {t('nav.dashboard')}
                 </Link>
                 <span className="text-text">
-                  Welcome, {user.name}
+                  {t('nav.welcome', { name: user.name })}
                 </span>
                 <button onClick={handleLogout} className="btn-outline">
-                  Logout
+                  {t('nav.logout')}
                 </button>
               </>
             )}
+            {/* Language Toggle */}
+            <div className="flex items-center space-x-2 border-l border-gray-200 pl-4">
+              <button
+                onClick={() => changeLanguage('en')}
+                className={`px-2 py-1 text-sm font-medium transition-colors ${
+                  i18n.language === 'en'
+                    ? 'text-primary font-bold'
+                    : 'text-gray-500 hover:text-text'
+                }`}
+              >
+                EN
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                onClick={() => changeLanguage('am')}
+                className={`px-2 py-1 text-sm font-medium transition-colors ${
+                  i18n.language === 'am'
+                    ? 'text-primary font-bold'
+                    : 'text-gray-500 hover:text-text'
+                }`}
+              >
+                አማ
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -96,21 +127,21 @@ const Navbar = () => {
                     className="text-text hover:text-primary transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Home
+                    {t('nav.home')}
                   </Link>
                   <Link
                     to="/login"
                     className="text-text hover:text-primary transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Login
+                    {t('nav.login')}
                   </Link>
                   <Link
                     to="/register"
                     className="btn-primary text-center"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Get Started
+                    {t('nav.getStarted')}
                   </Link>
                 </>
               ) : (
@@ -120,14 +151,45 @@ const Navbar = () => {
                     className="text-text hover:text-primary transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Dashboard
+                    {t('nav.dashboard')}
                   </Link>
-                  <span className="text-text">Welcome, {user.name}</span>
+                  <span className="text-text">{t('nav.welcome', { name: user.name })}</span>
                   <button onClick={handleLogout} className="btn-outline">
-                    Logout
+                    {t('nav.logout')}
                   </button>
                 </>
               )}
+              {/* Mobile Language Toggle */}
+              <div className="flex items-center space-x-2 pt-2 border-t border-gray-200">
+                <span className="text-sm text-gray-500">Language:</span>
+                <button
+                  onClick={() => {
+                    changeLanguage('en');
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`px-2 py-1 text-sm font-medium transition-colors ${
+                    i18n.language === 'en'
+                      ? 'text-primary font-bold'
+                      : 'text-gray-500 hover:text-text'
+                  }`}
+                >
+                  EN
+                </button>
+                <span className="text-gray-300">|</span>
+                <button
+                  onClick={() => {
+                    changeLanguage('am');
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`px-2 py-1 text-sm font-medium transition-colors ${
+                    i18n.language === 'am'
+                      ? 'text-primary font-bold'
+                      : 'text-gray-500 hover:text-text'
+                  }`}
+                >
+                  አማ
+                </button>
+              </div>
             </div>
           </div>
         )}

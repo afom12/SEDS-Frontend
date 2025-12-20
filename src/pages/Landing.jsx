@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   FaHandHoldingHeart,
   FaShieldAlt,
@@ -12,6 +13,7 @@ import {
 } from 'react-icons/fa';
 
 const Landing = () => {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -27,35 +29,34 @@ const Landing = () => {
             </div>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Give with dignity.<br />Help with trust.
+            {t('hero.title')}
           </h1>
           <p className="text-xl md:text-2xl mb-10 text-neutral-light max-w-3xl mx-auto opacity-95 leading-relaxed">
-            A compassionate share & donor platform where every contribution matters,
-            every need is verified, and every donation can be anonymous.
+            {t('hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link to="/register?role=donor" className="bg-secondary hover:bg-secondary-dark text-white font-semibold py-4 px-10 rounded-xl transition-all duration-200 shadow-xl hover:shadow-2xl text-lg transform hover:scale-105">
-              Donate Now
+              {t('hero.donateNow')}
             </Link>
             <Link to="/register?role=receiver" className="bg-white text-primary hover:bg-neutral-light font-semibold py-4 px-10 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl text-lg transform hover:scale-105">
-              Request Help
+              {t('hero.requestHelp')}
             </Link>
           </div>
           {/* Credibility Line */}
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm md:text-base text-neutral-light opacity-90">
             <span className="flex items-center gap-2">
               <FaShieldAlt className="text-secondary" />
-              Verified requests
+              {t('hero.credibility.verified')}
             </span>
             <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-2">
               <FaLock className="text-secondary" />
-              Anonymous donations
+              {t('hero.credibility.anonymous')}
             </span>
             <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-2">
               <FaChartLine className="text-secondary" />
-              Transparent tracking
+              {t('hero.credibility.transparent')}
             </span>
           </div>
         </div>
@@ -66,10 +67,10 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-text-dark">
-              How It Works
+              {t('howItWorks.title')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Simple, transparent, and compassionate. Three easy steps to make a real difference.
+              {t('howItWorks.subtitle')}
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -78,14 +79,13 @@ const Landing = () => {
                 <FaShieldAlt className="text-white text-3xl" />
               </div>
               <div className="mb-3">
-                <span className="inline-block bg-secondary bg-opacity-10 text-secondary font-bold text-sm px-3 py-1 rounded-full mb-3">Step 1</span>
+                <span className="inline-block bg-secondary bg-opacity-10 text-secondary font-bold text-sm px-3 py-1 rounded-full mb-3">{t('howItWorks.step1.badge')}</span>
               </div>
               <h3 className="text-2xl font-bold mb-4 text-text-dark">
-                Verified Requests
+                {t('howItWorks.step1.title')}
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                All donation requests are carefully reviewed and verified by our
-                admin team to ensure legitimacy and genuine need.
+                {t('howItWorks.step1.description')}
               </p>
             </div>
 
@@ -94,14 +94,13 @@ const Landing = () => {
                 <FaLock className="text-white text-3xl" />
               </div>
               <div className="mb-3">
-                <span className="inline-block bg-secondary bg-opacity-10 text-secondary font-bold text-sm px-3 py-1 rounded-full mb-3">Step 2</span>
+                <span className="inline-block bg-secondary bg-opacity-10 text-secondary font-bold text-sm px-3 py-1 rounded-full mb-3">{t('howItWorks.step2.badge')}</span>
               </div>
               <h3 className="text-2xl font-bold mb-4 text-text-dark">
-                Anonymous Donation
+                {t('howItWorks.step2.title')}
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Donate anonymously or publicly. Your choice. No judgment, no
-                pressure. Every contribution is valued equally.
+                {t('howItWorks.step2.description')}
               </p>
             </div>
 
@@ -110,14 +109,13 @@ const Landing = () => {
                 <FaChartLine className="text-white text-3xl" />
               </div>
               <div className="mb-3">
-                <span className="inline-block bg-secondary bg-opacity-10 text-secondary font-bold text-sm px-3 py-1 rounded-full mb-3">Step 3</span>
+                <span className="inline-block bg-secondary bg-opacity-10 text-secondary font-bold text-sm px-3 py-1 rounded-full mb-3">{t('howItWorks.step3.badge')}</span>
               </div>
               <h3 className="text-2xl font-bold mb-4 text-text-dark">
-                Tracked Delivery
+                {t('howItWorks.step3.title')}
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Follow your donation from start to finish. See exactly how your
-                contribution helps and where it goes.
+                {t('howItWorks.step3.description')}
               </p>
             </div>
           </div>
@@ -129,10 +127,10 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-text-dark">
-              Who We Serve
+              {t('whoWeServe.title')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              A platform built for everyone who wants to share, give, and make a difference.
+              {t('whoWeServe.subtitle')}
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -141,24 +139,23 @@ const Landing = () => {
                 <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mr-4">
                   <FaHandHoldingHeart className="text-white text-xl" />
                 </div>
-                <h3 className="text-2xl font-semibold text-text-dark">Donor</h3>
+                <h3 className="text-2xl font-semibold text-text-dark">{t('whoWeServe.donor.title')}</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Make a difference with confidence. Browse verified requests,
-                donate anonymously or publicly, and track your impact.
+                {t('whoWeServe.donor.description')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Verified donation requests
+                  {t('whoWeServe.donor.feature1')}
                 </li>
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Anonymous donation option
+                  {t('whoWeServe.donor.feature2')}
                 </li>
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Full donation tracking
+                  {t('whoWeServe.donor.feature3')}
                 </li>
               </ul>
             </div>
@@ -168,24 +165,23 @@ const Landing = () => {
                 <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mr-4">
                   <FaUser className="text-white text-xl" />
                 </div>
-                <h3 className="text-2xl font-semibold text-text-dark">Receiver</h3>
+                <h3 className="text-2xl font-semibold text-text-dark">{t('whoWeServe.receiver.title')}</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Submit your verified request for help. Receive support with
-                dignity and respect, maintaining your privacy.
+                {t('whoWeServe.receiver.description')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Easy request submission
+                  {t('whoWeServe.receiver.feature1')}
                 </li>
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Privacy protection
+                  {t('whoWeServe.receiver.feature2')}
                 </li>
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Status tracking
+                  {t('whoWeServe.receiver.feature3')}
                 </li>
               </ul>
             </div>
@@ -195,24 +191,23 @@ const Landing = () => {
                 <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mr-4">
                   <FaUserShield className="text-white text-xl" />
                 </div>
-                <h3 className="text-2xl font-semibold text-text-dark">Admin</h3>
+                <h3 className="text-2xl font-semibold text-text-dark">{t('whoWeServe.admin.title')}</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Manage the platform with transparency. Verify requests, monitor
-                donations, and ensure trust throughout the system.
+                {t('whoWeServe.admin.description')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Request verification
+                  {t('whoWeServe.admin.feature1')}
                 </li>
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  User management
+                  {t('whoWeServe.admin.feature2')}
                 </li>
                 <li className="flex items-center">
                   <FaCheckCircle className="text-accent mr-2" />
-                  Analytics & reports
+                  {t('whoWeServe.admin.feature3')}
                 </li>
               </ul>
             </div>
@@ -225,11 +220,10 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 text-text-dark">
-              Trust & Transparency
+              {t('trust.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We believe in complete transparency. Every request is verified,
-              every donation is tracked, and every process is open.
+              {t('trust.subtitle')}
             </p>
           </div>
 
@@ -241,12 +235,10 @@ const Landing = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-text-dark">
-                    Verified Requests Only
+                    {t('trust.verified.title')}
                   </h3>
                   <p className="text-gray-600">
-                    All donation requests go through a thorough verification
-                    process. We ensure that every need is genuine and legitimate
-                    before it goes live.
+                    {t('trust.verified.description')}
                   </p>
                 </div>
               </div>
@@ -259,12 +251,10 @@ const Landing = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-text-dark">
-                    Full Tracking & Reporting
+                    {t('trust.tracking.title')}
                   </h3>
                   <p className="text-gray-600">
-                    See exactly where your donation goes. Track the entire
-                    journey from your contribution to the final delivery, with
-                    complete transparency.
+                    {t('trust.tracking.description')}
                   </p>
                 </div>
               </div>
@@ -277,12 +267,10 @@ const Landing = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-text-dark">
-                    Privacy Protected
+                    {t('trust.privacy.title')}
                   </h3>
                   <p className="text-gray-600">
-                    Your privacy matters. Donate anonymously, request help
-                    discreetly, and maintain your dignity throughout the
-                    process.
+                    {t('trust.privacy.description')}
                   </p>
                 </div>
               </div>
@@ -295,12 +283,10 @@ const Landing = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-text-dark">
-                    No Judgment Policy
+                    {t('trust.noJudgment.title')}
                   </h3>
                   <p className="text-gray-600">
-                    Whether you give $5 or $5000, every donation is equally
-                    valued. We create a judgment-free environment for both
-                    donors and receivers.
+                    {t('trust.noJudgment.description')}
                   </p>
                 </div>
               </div>
@@ -320,14 +306,13 @@ const Landing = () => {
             <FaHandHoldingHeart className="text-white text-5xl mx-auto opacity-80" />
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Make a Difference?
+            {t('cta.title')}
           </h2>
           <p className="text-xl md:text-2xl mb-10 text-neutral-light opacity-95 leading-relaxed">
-            Join our community of donors and receivers. Together, we can create
-            positive change with dignity and trust.
+            {t('cta.subtitle')}
           </p>
           <Link to="/register" className="inline-block bg-secondary hover:bg-secondary-dark text-white font-semibold py-4 px-10 rounded-xl transition-all duration-200 shadow-xl hover:shadow-2xl text-lg transform hover:scale-105">
-            Get Started Today
+            {t('cta.button')}
           </Link>
         </div>
       </section>
