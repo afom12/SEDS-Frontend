@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -70,7 +71,8 @@ const DashboardLayout = ({ children }) => {
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <ToastProvider>
+        <Router>
         <Routes>
           {/* Public Routes */}
           <Route
@@ -274,6 +276,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
+      </ToastProvider>
     </AuthProvider>
   );
 }

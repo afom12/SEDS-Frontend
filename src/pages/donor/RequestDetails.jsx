@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Card from '../../components/Card';
 import StatusBadge from '../../components/StatusBadge';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
-import Alert from '../../components/Alert';
-import { mockDonationRequests } from '../../data/mockData';
+import { RequestCardSkeleton } from '../../components/LoadingSkeleton';
+import { useToastContext } from '../../context/ToastContext';
+import { dataService } from '../../services/dataService';
+import { useAuth } from '../../context/AuthContext';
 import { 
   FaArrowLeft, 
   FaMapMarkerAlt, 
@@ -13,27 +15,54 @@ import {
   FaFileAlt,
   FaCheckCircle,
   FaUser,
-  FaLock
+  FaLock,
+  FaSpinner
 } from 'react-icons/fa';
 
 const RequestDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const toast = useToastContext();
   const [showDonateDialog, setShowDonateDialog] = useState(false);
   const [donationAmount, setDonationAmount] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [request, setRequest] = useState(null);
+  const [loadingRequest, setLoadingRequest] = useState(true);
 
-  const request = mockDonationRequests.find(r => r.id === id);
+  useEffect(() => {
+    const fetchRequest = async () => {
+      setLoadingRequest(true);
+      const result = await dataService.getRequestById(id);
+      if (result.success) {
+        setRequest(result.data);
+      } else {
+        toast.error(result.error || 'Request not found');
+      }
+      setLoadingRequest(false);
+    };
+    fetchRequest();
+  }, [id, toast]);
+
+  if (loadingRequest) {
+    return (
+      <div className="p-6 md:p-8">
+        <RequestCardSkeleton />
+      </div>
+    );
+  }
 
   if (!request) {
     return (
       <div className="p-8">
-        <Alert type="error" message="Request not found" />
-        <Link to="/donor/requests" className="btn-primary mt-4 inline-block">
-          Back to Requests
-        </Link>
+        <div className="card text-center">
+          <h2 className="text-xl font-semibold text-text-dark mb-4">Request Not Found</h2>
+          <p className="text-gray-600 mb-6">The request you're looking for doesn't exist or has been removed.</p>
+          <Link to="/donor/requests" className="btn-primary inline-block">
+            Back to Requests
+          </Link>
+        </div>
       </div>
     );
   }
@@ -43,19 +72,44 @@ const RequestDetails = () => {
 
   const handleDonate = async () => {
     if (!donationAmount || parseFloat(donationAmount) <= 0) {
+      toast.warning('Please enter a valid donation amount');
+      return;
+    }
+
+    const amount = parseFloat(donationAmount);
+    if (amount > remainingAmount) {
+      toast.warning(`Maximum remaining amount is $${remainingAmount.toLocaleString()}`);
       return;
     }
 
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      setShowDonateDialog(false);
-      setShowSuccess(true);
+    const result = await dataService.createDonation({
+      requestId: request.id,
+      requestTitle: request.title,
+      amount: amount,
+      anonymous: isAnonymous,
+      donorName: isAnonymous ? 'Anonymous' : user?.name || 'Anonymous',
+    });
+
+    setLoading(false);
+    setShowDonateDialog(false);
+
+    if (result.success) {
+      toast.success(`Thank you! Your donation of $${amount.toLocaleString()} has been submitted.`);
+      // Update local request state
+      setRequest({
+        ...request,
+        currentAmount: request.currentAmount + amount,
+        progress: Math.min(100, Math.round(((request.currentAmount + amount) / request.amount) * 100)),
+        donorCount: request.donorCount + 1,
+      });
+      setDonationAmount('');
       setTimeout(() => {
         navigate('/donor/history');
       }, 2000);
-    }, 1500);
+    } else {
+      toast.error(result.error || 'Failed to process donation. Please try again.');
+    }
   };
 
   const getUrgencyColor = (urgency) => {
@@ -80,16 +134,7 @@ const RequestDetails = () => {
         Back to Requests
       </Link>
 
-      {showSuccess && (
-        <Alert
-          type="success"
-          message="Donation submitted successfully! Redirecting to your donation history..."
-          onClose={() => setShowSuccess(false)}
-          className="mb-6"
-        />
-      )}
-
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-6 animate-fade-in-up">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Header */}
@@ -254,11 +299,20 @@ const RequestDetails = () => {
             {/* Donate Button */}
             <button
               onClick={() => setShowDonateDialog(true)}
-              disabled={!donationAmount || parseFloat(donationAmount) <= 0}
+              disabled={!donationAmount || parseFloat(donationAmount) <= 0 || loading}
               className="w-full btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <FaHandHoldingHeart className="inline mr-2" />
-              Donate ${donationAmount || '0'}
+              {loading ? (
+                <>
+                  <FaSpinner className="inline mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <FaHandHoldingHeart className="inline mr-2" />
+                  Donate ${donationAmount || '0'}
+                </>
+              )}
             </button>
 
             {/* Info */}

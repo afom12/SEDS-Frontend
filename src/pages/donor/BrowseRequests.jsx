@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../../components/Card';
 import StatusBadge from '../../components/StatusBadge';
 import EmptyState from '../../components/EmptyState';
 import { RequestCardSkeleton } from '../../components/LoadingSkeleton';
-import { mockDonationRequests } from '../../data/mockData';
+import { dataService } from '../../services/dataService';
 import { FaSearch, FaFilter, FaHandHoldingHeart, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 const BrowseRequests = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedUrgency, setSelectedUrgency] = useState('all');
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [requests, setRequests] = useState([]);
 
   const categories = ['all', 'Medical', 'Education', 'Food', 'Clothing', 'Housing', 'Transportation'];
   const urgencyLevels = ['all', 'high', 'medium', 'low'];
 
+  useEffect(() => {
+    const fetchRequests = async () => {
+      setLoading(true);
+      const result = await dataService.getDonationRequests();
+      if (result.success) {
+        setRequests(result.data);
+      }
+      setLoading(false);
+    };
+    fetchRequests();
+  }, []);
+
   // Filter requests
-  const filteredRequests = mockDonationRequests.filter(request => {
+  const filteredRequests = requests.filter(request => {
     const matchesSearch = request.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          request.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || request.category === selectedCategory;
@@ -40,7 +53,7 @@ const BrowseRequests = () => {
 
   if (loading) {
     return (
-      <div className="p-8">
+      <div className="p-6 md:p-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map(i => (
             <RequestCardSkeleton key={i} />
@@ -51,7 +64,7 @@ const BrowseRequests = () => {
   }
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-6 md:p-8 animate-fade-in">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-text-dark mb-2">Browse Requests</h1>
         <p className="text-gray-600">Find verified requests that need your support</p>
@@ -122,8 +135,8 @@ const BrowseRequests = () => {
         />
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRequests.map(request => (
-            <Card key={request.id} className="hover:shadow-xl transition-shadow">
+          {filteredRequests.map((request, index) => (
+            <Card key={request.id} className="hover:shadow-xl transition-shadow animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
               <div className="flex items-start justify-between mb-3">
                 <h3 className="text-xl font-semibold text-text-dark flex-1 pr-2">
                   {request.title}

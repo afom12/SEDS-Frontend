@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../components/Card';
 import Stepper from '../../components/Stepper';
-import Alert from '../../components/Alert';
+import { useToastContext } from '../../context/ToastContext';
+import { dataService } from '../../services/dataService';
 import { FaFileUpload, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 
 const SubmitRequest = () => {
   const navigate = useNavigate();
+  const toast = useToastContext();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -81,17 +82,23 @@ const SubmitRequest = () => {
   };
 
   const handleSubmit = async () => {
-    if (!validateStep(currentStep)) return;
+    if (!validateStep(currentStep)) {
+      toast.warning('Please complete all required fields');
+      return;
+    }
 
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      setShowSuccess(true);
+    const result = await dataService.submitRequest(formData);
+    setLoading(false);
+
+    if (result.success) {
+      toast.success('Request submitted successfully! It will be reviewed by our admin team.');
       setTimeout(() => {
         navigate('/receiver/status');
       }, 2000);
-    }, 1500);
+    } else {
+      toast.error(result.error || 'Failed to submit request. Please try again.');
+    }
   };
 
   const renderStepContent = () => {
@@ -334,20 +341,12 @@ const SubmitRequest = () => {
 
   return (
     <div className="p-6 md:p-8">
-      <div className="mb-8">
+      <div className="mb-8 animate-fade-in-up">
         <h1 className="text-3xl font-bold text-text-dark mb-2">Submit Request</h1>
         <p className="text-gray-600">Create a new donation request</p>
       </div>
 
-      {showSuccess && (
-        <Alert
-          type="success"
-          message="Request submitted successfully! Redirecting to status page..."
-          className="mb-6"
-        />
-      )}
-
-      <Card>
+      <Card className="animate-fade-in-up">
         {/* Stepper */}
         <div className="mb-8">
           <Stepper steps={steps} currentStep={currentStep} />
