@@ -2,6 +2,21 @@ import React from 'react';
 
 const StatusBadge = ({ status, size = 'md' }) => {
   const statusConfig = {
+    draft: {
+      bg: 'bg-gray-100',
+      text: 'text-gray-800',
+      label: 'Draft',
+    },
+    submitted: {
+      bg: 'bg-blue-100',
+      text: 'text-blue-800',
+      label: 'Submitted',
+    },
+    under_verification: {
+      bg: 'bg-yellow-100',
+      text: 'text-yellow-800',
+      label: 'Under Verification',
+    },
     pending: {
       bg: 'bg-yellow-100',
       text: 'text-yellow-800',
@@ -16,6 +31,11 @@ const StatusBadge = ({ status, size = 'md' }) => {
       bg: 'bg-red-100',
       text: 'text-red-800',
       label: 'Rejected',
+    },
+    fulfilled: {
+      bg: 'bg-purple-100',
+      text: 'text-purple-800',
+      label: 'Fulfilled',
     },
     completed: {
       bg: 'bg-blue-100',
@@ -51,4 +71,8 @@ const StatusBadge = ({ status, size = 'md' }) => {
 };
 
 export default StatusBadge;
+
+
+
+
 

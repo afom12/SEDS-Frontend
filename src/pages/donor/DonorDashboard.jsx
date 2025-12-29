@@ -1,13 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Card from '../../components/Card';
-import { FaHandHoldingHeart, FaHistory, FaCheckCircle } from 'react-icons/fa';
+import { mockDonations, mockDonationRequests } from '../../data/mockData';
+import { FaHandHoldingHeart, FaHistory, FaCheckCircle, FaArrowRight, FaClock } from 'react-icons/fa';
 
 const DonorDashboard = () => {
   const { user } = useAuth();
 
+  const totalDonated = mockDonations
+    .filter(d => d.status === 'completed')
+    .reduce((sum, d) => sum + d.amount, 0);
+
+  const completedCount = mockDonations.filter(d => d.status === 'completed').length;
+  const activeRequests = mockDonationRequests.filter(r => r.status === 'approved').slice(0, 3);
+
   return (
-    <div className="p-8">
+    <div className="p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-text-dark mb-2">
           Welcome back, {user?.name}!
@@ -15,6 +24,7 @@ const DonorDashboard = () => {
         <p className="text-gray-600">Make a difference with your donations</p>
       </div>
 
+      {/* Stats Cards */}
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         <Card>
           <div className="flex items-center">
@@ -22,8 +32,8 @@ const DonorDashboard = () => {
               <FaHandHoldingHeart className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Donations</p>
-              <p className="text-2xl font-bold text-text-dark">$0</p>
+              <p className="text-sm text-gray-600">Total Donated</p>
+              <p className="text-2xl font-bold text-text-dark">${totalDonated.toLocaleString()}</p>
             </div>
           </div>
         </Card>
@@ -35,7 +45,7 @@ const DonorDashboard = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Completed</p>
-              <p className="text-2xl font-bold text-text-dark">0</p>
+              <p className="text-2xl font-bold text-text-dark">{completedCount}</p>
             </div>
           </div>
         </Card>
@@ -46,30 +56,100 @@ const DonorDashboard = () => {
               <FaHistory className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Donation History</p>
-              <p className="text-2xl font-bold text-text-dark">0</p>
+              <p className="text-sm text-gray-600">Total Donations</p>
+              <p className="text-2xl font-bold text-text-dark">{mockDonations.length}</p>
             </div>
           </div>
         </Card>
       </div>
 
-      <Card>
-        <h2 className="text-xl font-semibold mb-4 text-text-dark">Quick Actions</h2>
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Dashboard content will be implemented here. This includes:
-          </p>
-          <ul className="list-disc list-inside space-y-2 text-gray-600">
-            <li>View verified donation requests</li>
-            <li>Make anonymous or public donations</li>
-            <li>Track donation status</li>
-            <li>View donation history</li>
-          </ul>
-        </div>
-      </Card>
+      {/* Quick Actions */}
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <Card className="hover:shadow-xl transition-shadow cursor-pointer">
+          <Link to="/donor/requests" className="block">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-semibold text-text-dark mb-2">Browse Requests</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Find verified requests that need your support
+                </p>
+                <span className="text-primary font-medium flex items-center">
+                  View Requests <FaArrowRight className="ml-2" />
+                </span>
+              </div>
+              <div className="w-16 h-16 bg-primary bg-opacity-10 rounded-lg flex items-center justify-center">
+                <FaHandHoldingHeart className="text-primary text-2xl" />
+              </div>
+            </div>
+          </Link>
+        </Card>
+
+        <Card className="hover:shadow-xl transition-shadow cursor-pointer">
+          <Link to="/donor/history" className="block">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-semibold text-text-dark mb-2">Donation History</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Track all your donations and their impact
+                </p>
+                <span className="text-primary font-medium flex items-center">
+                  View History <FaArrowRight className="ml-2" />
+                </span>
+              </div>
+              <div className="w-16 h-16 bg-secondary bg-opacity-10 rounded-lg flex items-center justify-center">
+                <FaHistory className="text-secondary text-2xl" />
+              </div>
+            </div>
+          </Link>
+        </Card>
+      </div>
+
+      {/* Featured Requests */}
+      {activeRequests.length > 0 && (
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-text-dark">Featured Requests</h2>
+            <Link to="/donor/requests" className="text-primary hover:text-primary-dark text-sm font-medium">
+              View All
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {activeRequests.map(request => (
+              <Link
+                key={request.id}
+                to={`/donor/requests/${request.id}`}
+                className="block p-4 border border-gray-200 rounded-lg hover:border-primary hover:shadow-md transition-all"
+              >
+                <h3 className="font-semibold text-text-dark mb-2 line-clamp-2">{request.title}</h3>
+                <p className="text-sm text-gray-600 mb-3 line-clamp-2">{request.description}</p>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-500 flex items-center">
+                    <FaClock className="mr-1" />
+                    {request.urgency}
+                  </span>
+                  <span className="text-primary font-medium">${request.amount.toLocaleString()}</span>
+                </div>
+                <div className="mt-3">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-secondary h-2 rounded-full"
+                      style={{ width: `${request.progress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">{request.progress}% funded</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </Card>
+      )}
     </div>
   );
 };
 
 export default DonorDashboard;
+
+
+
+
 

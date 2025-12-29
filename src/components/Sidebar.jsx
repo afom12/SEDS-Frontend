@@ -18,7 +18,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const donorMenu = [
     { path: '/donor/dashboard', label: 'Dashboard', icon: FaHome },
-    { path: '/donor/requests', label: 'View Requests', icon: FaHandHoldingHeart },
+    { path: '/donor/requests', label: 'Browse Requests', icon: FaHandHoldingHeart },
     { path: '/donor/history', label: 'Donation History', icon: FaHistory },
   ];
 
@@ -26,13 +26,15 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: '/receiver/dashboard', label: 'Dashboard', icon: FaHome },
     { path: '/receiver/request', label: 'Submit Request', icon: FaFileAlt },
     { path: '/receiver/status', label: 'Request Status', icon: FaClipboardCheck },
+    { path: '/receiver/profile', label: 'Profile', icon: FaUsers },
   ];
 
   const adminMenu = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: FaHome },
+    { path: '/admin/requests', label: 'Review Requests', icon: FaClipboardCheck },
     { path: '/admin/users', label: 'User Management', icon: FaUsers },
-    { path: '/admin/requests', label: 'Verify Requests', icon: FaClipboardCheck },
     { path: '/admin/analytics', label: 'Analytics', icon: FaChartBar },
+    { path: '/admin/logs', label: 'Activity Logs', icon: FaFileAlt },
   ];
 
   const getMenuItems = () => {
@@ -75,7 +77,10 @@ const Sidebar = ({ isOpen, onClose }) => {
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.path;
+              // Check if current path matches or starts with the menu item path
+              const isActive = location.pathname === item.path || 
+                               (item.path !== `/${user?.role?.toLowerCase()}/dashboard` && 
+                                location.pathname.startsWith(item.path));
               return (
                 <li key={item.path}>
                   <Link

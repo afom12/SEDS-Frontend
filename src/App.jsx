@@ -10,9 +10,25 @@ import Sidebar from './components/Sidebar';
 import Landing from './pages/Landing';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+
+// Donor Pages
 import DonorDashboard from './pages/donor/DonorDashboard';
+import BrowseRequests from './pages/donor/BrowseRequests';
+import RequestDetails from './pages/donor/RequestDetails';
+import DonationHistory from './pages/donor/DonationHistory';
+
+// Receiver Pages
 import ReceiverDashboard from './pages/receiver/ReceiverDashboard';
+import SubmitRequest from './pages/receiver/SubmitRequest';
+import RequestStatus from './pages/receiver/RequestStatus';
+import Profile from './pages/receiver/Profile';
+
+// Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
+import ReviewRequests from './pages/admin/ReviewRequests';
+import UserManagement from './pages/admin/UserManagement';
+import Analytics from './pages/admin/Analytics';
+import ActivityLogs from './pages/admin/ActivityLogs';
 
 const DashboardLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -100,6 +116,36 @@ function App() {
             }
           />
           <Route
+            path="/donor/requests"
+            element={
+              <ProtectedRoute allowedRoles={['donor']}>
+                <DashboardLayout>
+                  <BrowseRequests />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/donor/requests/:id"
+            element={
+              <ProtectedRoute allowedRoles={['donor']}>
+                <DashboardLayout>
+                  <RequestDetails />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/donor/history"
+            element={
+              <ProtectedRoute allowedRoles={['donor']}>
+                <DashboardLayout>
+                  <DonationHistory />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/donor/*"
             element={
               <ProtectedRoute allowedRoles={['donor']}>
@@ -122,6 +168,36 @@ function App() {
             }
           />
           <Route
+            path="/receiver/request"
+            element={
+              <ProtectedRoute allowedRoles={['receiver']}>
+                <DashboardLayout>
+                  <SubmitRequest />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/receiver/status"
+            element={
+              <ProtectedRoute allowedRoles={['receiver']}>
+                <DashboardLayout>
+                  <RequestStatus />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/receiver/profile"
+            element={
+              <ProtectedRoute allowedRoles={['receiver']}>
+                <DashboardLayout>
+                  <Profile />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/receiver/*"
             element={
               <ProtectedRoute allowedRoles={['receiver']}>
@@ -139,6 +215,46 @@ function App() {
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
                   <AdminDashboard />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/requests"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DashboardLayout>
+                  <ReviewRequests />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DashboardLayout>
+                  <UserManagement />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/analytics"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DashboardLayout>
+                  <Analytics />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/logs"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DashboardLayout>
+                  <ActivityLogs />
                 </DashboardLayout>
               </ProtectedRoute>
             }
