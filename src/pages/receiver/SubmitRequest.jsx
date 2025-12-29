@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import Stepper from '../../components/Stepper';
 import { useToastContext } from '../../context/ToastContext';
@@ -7,6 +8,7 @@ import { dataService } from '../../services/dataService';
 import { FaFileUpload, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 
 const SubmitRequest = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const toast = useToastContext();
   const [currentStep, setCurrentStep] = useState(0);
@@ -23,11 +25,11 @@ const SubmitRequest = () => {
   const [errors, setErrors] = useState({});
 
   const steps = [
-    { label: 'Basic Info', description: 'Request details' },
-    { label: 'Category & Amount', description: 'Select category' },
-    { label: 'Additional Info', description: 'Location & urgency' },
-    { label: 'Documents', description: 'Upload files' },
-    { label: 'Review', description: 'Confirm submission' },
+    { label: t('receiver.submitRequest.basicInfo'), description: t('receiver.submitRequest.basicInfoDesc') },
+    { label: t('receiver.submitRequest.categoryAmount'), description: t('receiver.submitRequest.categoryAmountDesc') },
+    { label: t('receiver.submitRequest.additionalInfo'), description: t('receiver.submitRequest.additionalInfoDesc') },
+    { label: t('receiver.submitRequest.documents'), description: t('receiver.submitRequest.documentsDesc') },
+    { label: t('receiver.submitRequest.review'), description: t('receiver.submitRequest.reviewDesc') },
   ];
 
   const categories = ['Medical', 'Education', 'Food', 'Clothing', 'Housing', 'Transportation'];
@@ -108,14 +110,14 @@ const SubmitRequest = () => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Request Title *
+                {t('receiver.submitRequest.requestTitle')} *
               </label>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="e.g., Medical Expenses for Family Emergency"
+                placeholder={t('receiver.submitRequest.titlePlaceholder')}
                 className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                   errors.title ? 'border-red-300' : 'border-gray-200'
                 }`}
@@ -125,14 +127,14 @@ const SubmitRequest = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Description *
+                {t('receiver.submitRequest.description')} *
               </label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
                 rows={6}
-                placeholder="Please provide a detailed description of your request and why you need support..."
+                placeholder={t('receiver.submitRequest.descriptionPlaceholder')}
                 className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
                   errors.description ? 'border-red-300' : 'border-gray-200'
                 }`}
@@ -141,7 +143,7 @@ const SubmitRequest = () => {
                 <p className="text-red-600 text-sm mt-1">{errors.description}</p>
               )}
               <p className="text-gray-500 text-xs mt-1">
-                {formData.description.length}/50 minimum characters
+                {formData.description.length}/50 {t('receiver.submitRequest.minimumChars')}
               </p>
             </div>
           </div>
@@ -162,7 +164,7 @@ const SubmitRequest = () => {
                   errors.category ? 'border-red-300' : 'border-gray-200'
                 }`}
               >
-                <option value="">Select a category</option>
+                <option value="">{t('receiver.submitRequest.selectCategory')}</option>
                 {categories.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
@@ -172,7 +174,7 @@ const SubmitRequest = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Requested Amount *
+                {t('receiver.submitRequest.requestedAmount')} *
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
@@ -181,7 +183,7 @@ const SubmitRequest = () => {
                   name="amount"
                   value={formData.amount}
                   onChange={handleChange}
-                  placeholder="Enter amount"
+                  placeholder={t('receiver.submitRequest.enterAmount')}
                   min="1"
                   className={`w-full pl-8 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
                     errors.amount ? 'border-red-300' : 'border-gray-200'
@@ -190,7 +192,7 @@ const SubmitRequest = () => {
               </div>
               {errors.amount && <p className="text-red-600 text-sm mt-1">{errors.amount}</p>}
               <p className="text-gray-500 text-xs mt-1">
-                Be realistic about the amount needed. All requests are verified.
+                {t('receiver.submitRequest.beRealistic')}
               </p>
             </div>
           </div>
@@ -245,15 +247,15 @@ const SubmitRequest = () => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Supporting Documents
+                {t('receiver.submitRequest.supportingDocuments')}
               </label>
               <p className="text-sm text-gray-600 mb-4">
-                Upload documents that support your request (medical reports, bills, certificates, etc.)
+                {t('receiver.submitRequest.documentsNote')}
               </p>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
                 <FaFileUpload className="text-gray-400 text-3xl mx-auto mb-3" />
                 <label className="cursor-pointer">
-                  <span className="text-primary font-medium">Click to upload</span>
+                  <span className="text-primary font-medium">{t('receiver.submitRequest.clickToUpload')}</span>
                   <input
                     type="file"
                     multiple
@@ -262,7 +264,7 @@ const SubmitRequest = () => {
                     accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                   />
                 </label>
-                <p className="text-xs text-gray-500 mt-2">PDF, DOC, DOCX, JPG, PNG (Max 5MB each)</p>
+                <p className="text-xs text-gray-500 mt-2">{t('receiver.submitRequest.fileTypes')}</p>
               </div>
 
               {formData.documents.length > 0 && (
@@ -280,7 +282,7 @@ const SubmitRequest = () => {
                         }}
                         className="text-red-600 hover:text-red-700"
                       >
-                        Remove
+                        {t('receiver.submitRequest.remove')}
                       </button>
                     </div>
                   ))}
@@ -295,39 +297,39 @@ const SubmitRequest = () => {
           <div className="space-y-6">
             <Alert
               type="info"
-              message="Please review your request details before submitting. All requests are subject to admin verification."
+              message={t('receiver.submitRequest.reviewNote')}
             />
             <div className="bg-gray-50 rounded-lg p-6 space-y-4">
               <div>
-                <h3 className="font-semibold text-gray-700 mb-1">Title</h3>
+                <h3 className="font-semibold text-gray-700 mb-1">{t('receiver.submitRequest.titleLabel')}</h3>
                 <p className="text-gray-900">{formData.title}</p>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-700 mb-1">Description</h3>
+                <h3 className="font-semibold text-gray-700 mb-1">{t('receiver.submitRequest.descriptionLabel')}</h3>
                 <p className="text-gray-900 whitespace-pre-line">{formData.description}</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-semibold text-gray-700 mb-1">Category</h3>
+                  <h3 className="font-semibold text-gray-700 mb-1">{t('common.category')}</h3>
                   <p className="text-gray-900">{formData.category}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-700 mb-1">Amount</h3>
+                  <h3 className="font-semibold text-gray-700 mb-1">{t('common.amount')}</h3>
                   <p className="text-gray-900">${parseFloat(formData.amount).toLocaleString()}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-700 mb-1">Location</h3>
+                  <h3 className="font-semibold text-gray-700 mb-1">{t('common.location')}</h3>
                   <p className="text-gray-900">{formData.location}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-700 mb-1">Urgency</h3>
-                  <p className="text-gray-900 capitalize">{formData.urgency}</p>
+                  <h3 className="font-semibold text-gray-700 mb-1">{t('common.urgency')}</h3>
+                  <p className="text-gray-900 capitalize">{t(`common.${formData.urgency}`)}</p>
                 </div>
               </div>
               {formData.documents.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-700 mb-1">Documents</h3>
-                  <p className="text-gray-900">{formData.documents.length} file(s) uploaded</p>
+                  <h3 className="font-semibold text-gray-700 mb-1">{t('receiver.submitRequest.documents')}</h3>
+                  <p className="text-gray-900">{formData.documents.length} {t('receiver.submitRequest.filesUploaded')}</p>
                 </div>
               )}
             </div>
@@ -342,8 +344,8 @@ const SubmitRequest = () => {
   return (
     <div className="p-6 md:p-8">
       <div className="mb-8 animate-fade-in-up">
-        <h1 className="text-3xl font-bold text-text-dark mb-2">Submit Request</h1>
-        <p className="text-gray-600">Create a new donation request</p>
+        <h1 className="text-3xl font-bold text-text-dark mb-2">{t('receiver.submitRequest.title')}</h1>
+        <p className="text-gray-600">{t('receiver.submitRequest.subtitle')}</p>
       </div>
 
       <Card className="animate-fade-in-up">
@@ -364,11 +366,11 @@ const SubmitRequest = () => {
             disabled={currentStep === 0}
             className="btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Back
+            {t('common.back')}
           </button>
           {currentStep < steps.length - 1 ? (
             <button onClick={handleNext} className="btn-primary">
-              Next
+              {t('common.next')}
             </button>
           ) : (
             <button
@@ -379,12 +381,12 @@ const SubmitRequest = () => {
               {loading ? (
                 <>
                   <FaSpinner className="animate-spin inline mr-2" />
-                  Submitting...
+                  {t('common.submitting')}...
                 </>
               ) : (
                 <>
                   <FaCheckCircle className="inline mr-2" />
-                  Submit Request
+                  {t('common.submit')}
                 </>
               )}
             </button>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import StatusBadge from '../../components/StatusBadge';
 import EmptyState from '../../components/EmptyState';
@@ -8,6 +9,7 @@ import { dataService } from '../../services/dataService';
 import { FaSearch, FaFilter, FaHandHoldingHeart, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 const BrowseRequests = () => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedUrgency, setSelectedUrgency] = useState('all');
@@ -66,8 +68,8 @@ const BrowseRequests = () => {
   return (
     <div className="p-6 md:p-8 animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-text-dark mb-2">Browse Requests</h1>
-        <p className="text-gray-600">Find verified requests that need your support</p>
+        <h1 className="text-3xl font-bold text-text-dark mb-2">{t('donor.browseRequests.title')}</h1>
+        <p className="text-gray-600">{t('donor.browseRequests.subtitle')}</p>
       </div>
 
       {/* Filters */}
@@ -79,7 +81,7 @@ const BrowseRequests = () => {
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search requests..."
+                placeholder={t('donor.browseRequests.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
@@ -96,7 +98,7 @@ const BrowseRequests = () => {
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>
-                  {cat === 'all' ? 'All Categories' : cat}
+                  {cat === 'all' ? t('donor.browseRequests.allCategories') : cat}
                 </option>
               ))}
             </select>
@@ -111,7 +113,7 @@ const BrowseRequests = () => {
             >
               {urgencyLevels.map(level => (
                 <option key={level} value={level}>
-                  {level === 'all' ? 'All Urgency' : level.charAt(0).toUpperCase() + level.slice(1)}
+                  {level === 'all' ? t('donor.browseRequests.allUrgency') : t(`common.${level}`)}
                 </option>
               ))}
             </select>
@@ -122,7 +124,7 @@ const BrowseRequests = () => {
       {/* Results Count */}
       <div className="mb-4">
         <p className="text-gray-600">
-          Showing <span className="font-semibold text-text-dark">{filteredRequests.length}</span> verified request{filteredRequests.length !== 1 ? 's' : ''}
+          {t('donor.browseRequests.showing')} <span className="font-semibold text-text-dark">{filteredRequests.length}</span> {filteredRequests.length === 1 ? t('donor.browseRequests.verifiedRequest') : t('donor.browseRequests.verifiedRequests')}
         </p>
       </div>
 
@@ -130,8 +132,8 @@ const BrowseRequests = () => {
       {filteredRequests.length === 0 ? (
         <EmptyState
           icon={FaHandHoldingHeart}
-          title="No requests found"
-          message="Try adjusting your filters to see more requests."
+          title={t('donor.browseRequests.noRequests')}
+          message={t('donor.browseRequests.noRequestsDesc')}
         />
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -155,7 +157,7 @@ const BrowseRequests = () => {
                 </span>
                 <span className={`text-xs font-medium px-2 py-1 rounded ${getUrgencyColor(request.urgency)}`}>
                   <FaClock className="inline mr-1" />
-                  {request.urgency} urgency
+                  {t(`common.${request.urgency}`)} {t('common.urgency').toLowerCase()}
                 </span>
               </div>
 
@@ -186,7 +188,7 @@ const BrowseRequests = () => {
               {/* Donor Count */}
               <div className="text-sm text-gray-600 mb-4">
                 <FaHandHoldingHeart className="inline mr-1 text-secondary" />
-                {request.donorCount} donor{request.donorCount !== 1 ? 's' : ''} contributed
+                {request.donorCount} {request.donorCount === 1 ? t('donor.browseRequests.donorsContributed') : t('donor.browseRequests.donorsContributedPlural')}
               </div>
 
               {/* Action Button */}
@@ -194,7 +196,7 @@ const BrowseRequests = () => {
                 to={`/donor/requests/${request.id}`}
                 className="block w-full btn-secondary text-center"
               >
-                View Details & Donate
+                {t('donor.browseRequests.viewDetailsDonate')}
               </Link>
             </Card>
           ))}

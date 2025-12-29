@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Card from '../../components/Card';
 import StatusBadge from '../../components/StatusBadge';
@@ -7,6 +8,7 @@ import { mockStats, mockDonationRequests, mockUsers } from '../../data/mockData'
 import { FaUsers, FaClipboardCheck, FaChartBar, FaHandHoldingHeart, FaArrowRight, FaFileAlt, FaListAlt } from 'react-icons/fa';
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
 
   const pendingRequests = mockDonationRequests.filter(r => 
@@ -19,9 +21,9 @@ const AdminDashboard = () => {
     <div className="p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-text-dark mb-2">
-          Admin Dashboard
+          {t('admin.dashboard.title')}
         </h1>
-        <p className="text-gray-600">Manage the platform and ensure transparency</p>
+        <p className="text-gray-600">{t('admin.dashboard.subtitle')}</p>
       </div>
 
       {/* Key Metrics */}
@@ -32,7 +34,7 @@ const AdminDashboard = () => {
               <FaUsers className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Users</p>
+              <p className="text-sm text-gray-600">{t('admin.dashboard.totalUsers')}</p>
               <p className="text-2xl font-bold text-text-dark">{mockUsers.length}</p>
             </div>
           </div>
@@ -44,7 +46,7 @@ const AdminDashboard = () => {
               <FaClipboardCheck className="text-yellow-600 text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Pending Requests</p>
+              <p className="text-sm text-gray-600">{t('admin.dashboard.pendingRequests')}</p>
               <p className="text-2xl font-bold text-text-dark">{pendingRequests.length}</p>
             </div>
           </div>
@@ -56,7 +58,7 @@ const AdminDashboard = () => {
               <FaHandHoldingHeart className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Raised</p>
+              <p className="text-sm text-gray-600">{t('admin.dashboard.totalRaised')}</p>
               <p className="text-2xl font-bold text-text-dark">${totalRaised.toLocaleString()}</p>
             </div>
           </div>
@@ -68,7 +70,7 @@ const AdminDashboard = () => {
               <FaChartBar className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Requests</p>
+              <p className="text-sm text-gray-600">{t('admin.dashboard.totalRequests')}</p>
               <p className="text-2xl font-bold text-text-dark">{mockStats.totalRequests}</p>
             </div>
           </div>
@@ -83,10 +85,10 @@ const AdminDashboard = () => {
               <div className="w-16 h-16 bg-primary bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <FaClipboardCheck className="text-primary text-2xl" />
               </div>
-              <h3 className="font-semibold text-text-dark mb-2">Review Requests</h3>
-              <p className="text-sm text-gray-600 mb-3">{pendingRequests.length} pending</p>
+              <h3 className="font-semibold text-text-dark mb-2">{t('admin.dashboard.reviewRequests')}</h3>
+              <p className="text-sm text-gray-600 mb-3">{pendingRequests.length} {t('admin.dashboard.reviewRequestsDesc')}</p>
               <span className="text-primary font-medium flex items-center justify-center">
-                Review <FaArrowRight className="ml-2" />
+                {t('admin.reviewRequests.title')} <FaArrowRight className="ml-2" />
               </span>
             </div>
           </Link>
@@ -98,10 +100,10 @@ const AdminDashboard = () => {
               <div className="w-16 h-16 bg-secondary bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <FaUsers className="text-secondary text-2xl" />
               </div>
-              <h3 className="font-semibold text-text-dark mb-2">User Management</h3>
-              <p className="text-sm text-gray-600 mb-3">{mockUsers.length} users</p>
+              <h3 className="font-semibold text-text-dark mb-2">{t('admin.dashboard.userManagement')}</h3>
+              <p className="text-sm text-gray-600 mb-3">{mockUsers.length} {t('admin.dashboard.userManagementDesc')}</p>
               <span className="text-primary font-medium flex items-center justify-center">
-                Manage <FaArrowRight className="ml-2" />
+                {t('admin.userManagement.title')} <FaArrowRight className="ml-2" />
               </span>
             </div>
           </Link>
@@ -113,10 +115,10 @@ const AdminDashboard = () => {
               <div className="w-16 h-16 bg-accent bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <FaChartBar className="text-accent text-2xl" />
               </div>
-              <h3 className="font-semibold text-text-dark mb-2">Analytics</h3>
-              <p className="text-sm text-gray-600 mb-3">View insights</p>
+              <h3 className="font-semibold text-text-dark mb-2">{t('admin.dashboard.analytics')}</h3>
+              <p className="text-sm text-gray-600 mb-3">{t('admin.dashboard.analyticsDesc')}</p>
               <span className="text-primary font-medium flex items-center justify-center">
-                View <FaArrowRight className="ml-2" />
+                {t('common.viewAll')} <FaArrowRight className="ml-2" />
               </span>
             </div>
           </Link>
@@ -128,10 +130,10 @@ const AdminDashboard = () => {
               <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <FaListAlt className="text-green-600 text-2xl" />
               </div>
-              <h3 className="font-semibold text-text-dark mb-2">Activity Logs</h3>
-              <p className="text-sm text-gray-600 mb-3">Track activities</p>
+              <h3 className="font-semibold text-text-dark mb-2">{t('admin.dashboard.activityLogs')}</h3>
+              <p className="text-sm text-gray-600 mb-3">{t('admin.dashboard.activityLogsDesc')}</p>
               <span className="text-primary font-medium flex items-center justify-center">
-                View <FaArrowRight className="ml-2" />
+                {t('common.viewAll')} <FaArrowRight className="ml-2" />
               </span>
             </div>
           </Link>
@@ -142,9 +144,9 @@ const AdminDashboard = () => {
       {pendingRequests.length > 0 && (
         <Card>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-text-dark">Pending Requests</h2>
+            <h2 className="text-xl font-semibold text-text-dark">{t('admin.dashboard.pendingRequests')}</h2>
             <Link to="/admin/requests" className="text-primary hover:text-primary-dark text-sm font-medium">
-              View All
+              {t('common.viewAll')}
             </Link>
           </div>
           <div className="space-y-4">

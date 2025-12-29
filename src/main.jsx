@@ -5,6 +5,7 @@ import './i18n/config'
 import './index.css'
 import { initializeMockData } from './utils/storage'
 import * as mockData from './data/mockData'
+import './utils/devUtils' // Makes clearSEDSData() available in console
 
 // Initialize mock data in localStorage
 initializeMockData(mockData);

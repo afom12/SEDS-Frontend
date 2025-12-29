@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { FaBars, FaTimes, FaHandHoldingHeart } from 'react-icons/fa';
 
 const Navbar = () => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,7 +46,12 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6">
-            {!isAuthenticated ? (
+            {loading ? (
+              <div className="flex items-center space-x-6">
+                <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            ) : !isAuthenticated ? (
               <>
                 <Link
                   to="/"
@@ -120,7 +125,12 @@ const Navbar = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
             <div className="flex flex-col space-y-4">
-              {!isAuthenticated ? (
+              {loading ? (
+                <div className="space-y-2">
+                  <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              ) : !isAuthenticated ? (
                 <>
                   <Link
                     to="/"

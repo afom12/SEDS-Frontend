@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import StatusBadge from '../../components/StatusBadge';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
@@ -20,6 +21,7 @@ import {
 } from 'react-icons/fa';
 
 const RequestDetails = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -57,10 +59,10 @@ const RequestDetails = () => {
     return (
       <div className="p-8">
         <div className="card text-center">
-          <h2 className="text-xl font-semibold text-text-dark mb-4">Request Not Found</h2>
-          <p className="text-gray-600 mb-6">The request you're looking for doesn't exist or has been removed.</p>
+          <h2 className="text-xl font-semibold text-text-dark mb-4">{t('donor.requestDetails.requestNotFound')}</h2>
+          <p className="text-gray-600 mb-6">{t('donor.requestDetails.requestNotFoundDesc')}</p>
           <Link to="/donor/requests" className="btn-primary inline-block">
-            Back to Requests
+            {t('donor.requestDetails.backToRequests')}
           </Link>
         </div>
       </div>
@@ -72,13 +74,13 @@ const RequestDetails = () => {
 
   const handleDonate = async () => {
     if (!donationAmount || parseFloat(donationAmount) <= 0) {
-      toast.warning('Please enter a valid donation amount');
+      toast.warning(t('donor.requestDetails.validAmount'));
       return;
     }
 
     const amount = parseFloat(donationAmount);
     if (amount > remainingAmount) {
-      toast.warning(`Maximum remaining amount is $${remainingAmount.toLocaleString()}`);
+      toast.warning(t('donor.requestDetails.maxAmount', { amount: remainingAmount.toLocaleString() }));
       return;
     }
 
@@ -88,14 +90,14 @@ const RequestDetails = () => {
       requestTitle: request.title,
       amount: amount,
       anonymous: isAnonymous,
-      donorName: isAnonymous ? 'Anonymous' : user?.name || 'Anonymous',
+      donorName: isAnonymous ? t('common.anonymous') : user?.name || t('common.anonymous'),
     });
 
     setLoading(false);
     setShowDonateDialog(false);
 
     if (result.success) {
-      toast.success(`Thank you! Your donation of $${amount.toLocaleString()} has been submitted.`);
+      toast.success(t('donor.requestDetails.donationSuccess', { amount: amount.toLocaleString() }));
       // Update local request state
       setRequest({
         ...request,
@@ -108,7 +110,7 @@ const RequestDetails = () => {
         navigate('/donor/history');
       }, 2000);
     } else {
-      toast.error(result.error || 'Failed to process donation. Please try again.');
+      toast.error(result.error || t('donor.requestDetails.donationError'));
     }
   };
 
@@ -131,7 +133,7 @@ const RequestDetails = () => {
         className="inline-flex items-center text-gray-600 hover:text-primary mb-6"
       >
         <FaArrowLeft className="mr-2" />
-        Back to Requests
+        {t('donor.requestDetails.backToRequests')}
       </Link>
 
       <div className="grid lg:grid-cols-3 gap-6 animate-fade-in-up">
@@ -152,7 +154,7 @@ const RequestDetails = () => {
                   </span>
                   <span className="flex items-center">
                     <FaClock className="mr-2" />
-                    Posted {new Date(request.createdAt).toLocaleDateString()}
+                    {t('donor.requestDetails.posted')} {new Date(request.createdAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
@@ -161,12 +163,12 @@ const RequestDetails = () => {
             {/* Urgency Badge */}
             <div className={`inline-flex items-center px-3 py-1 rounded-lg border ${getUrgencyColor(request.urgency)} mb-4`}>
               <FaClock className="mr-2" />
-              <span className="font-medium capitalize">{request.urgency} Urgency</span>
+              <span className="font-medium capitalize">{t(`common.${request.urgency}`)} {t('donor.requestDetails.urgency')}</span>
             </div>
 
             {/* Description */}
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-text-dark mb-3">About This Request</h2>
+              <h2 className="text-xl font-semibold text-text-dark mb-3">{t('donor.requestDetails.aboutRequest')}</h2>
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                 {request.description}
               </p>
@@ -174,7 +176,7 @@ const RequestDetails = () => {
 
             {/* Category */}
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Category</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">{t('common.category')}</h3>
               <span className="inline-block px-3 py-1 bg-primary bg-opacity-10 text-primary rounded-lg font-medium">
                 {request.category}
               </span>
@@ -183,7 +185,7 @@ const RequestDetails = () => {
             {/* Documents */}
             {request.documents && request.documents.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Supporting Documents</h3>
+                <h3 className="text-sm font-semibold text-gray-700 mb-2">{t('donor.requestDetails.supportingDocuments')}</h3>
                 <div className="space-y-2">
                   {request.documents.map((doc, index) => (
                     <div
@@ -202,12 +204,12 @@ const RequestDetails = () => {
 
           {/* Progress Card */}
           <Card>
-            <h2 className="text-xl font-semibold text-text-dark mb-4">Funding Progress</h2>
+            <h2 className="text-xl font-semibold text-text-dark mb-4">{t('donor.requestDetails.fundingProgress')}</h2>
             <div className="mb-4">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-600">Raised</span>
+                <span className="text-gray-600">{t('donor.requestDetails.raised')}</span>
                 <span className="font-bold text-text-dark">
-                  ${request.currentAmount.toLocaleString()} of ${request.amount.toLocaleString()}
+                  ${request.currentAmount.toLocaleString()} {t('common.of')} ${request.amount.toLocaleString()}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-4">
@@ -220,15 +222,15 @@ const RequestDetails = () => {
             <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
               <div className="text-center">
                 <p className="text-2xl font-bold text-text-dark">{request.progress}%</p>
-                <p className="text-xs text-gray-600">Complete</p>
+                <p className="text-xs text-gray-600">{t('donor.requestDetails.complete')}</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-text-dark">{request.donorCount}</p>
-                <p className="text-xs text-gray-600">Donors</p>
+                <p className="text-xs text-gray-600">{t('donor.requestDetails.donors')}</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-text-dark">${remainingAmount.toLocaleString()}</p>
-                <p className="text-xs text-gray-600">Remaining</p>
+                <p className="text-xs text-gray-600">{t('common.remaining')}</p>
               </div>
             </div>
           </Card>
@@ -237,11 +239,11 @@ const RequestDetails = () => {
         {/* Donation Sidebar */}
         <div className="lg:col-span-1">
           <Card className="sticky top-24">
-            <h2 className="text-xl font-semibold text-text-dark mb-4">Make a Donation</h2>
+            <h2 className="text-xl font-semibold text-text-dark mb-4">{t('donor.requestDetails.makeDonation')}</h2>
 
             {/* Suggested Amounts */}
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">Quick Select</p>
+              <p className="text-sm text-gray-600 mb-2">{t('donor.requestDetails.quickSelect')}</p>
               <div className="grid grid-cols-2 gap-2">
                 {suggestedAmounts.map(amount => (
                   <button
@@ -262,7 +264,7 @@ const RequestDetails = () => {
             {/* Custom Amount */}
             <div className="mb-4">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Custom Amount
+                {t('donor.requestDetails.customAmount')}
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
@@ -271,7 +273,7 @@ const RequestDetails = () => {
                   min="1"
                   value={donationAmount}
                   onChange={(e) => setDonationAmount(e.target.value)}
-                  placeholder="Enter amount"
+                  placeholder={t('donor.requestDetails.enterAmount')}
                   className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
@@ -288,11 +290,11 @@ const RequestDetails = () => {
                 />
                 <span className="ml-2 text-sm text-gray-700 flex items-center">
                   <FaLock className="mr-1 text-gray-400" />
-                  Donate anonymously
+                  {t('donor.requestDetails.donateAnonymously')}
                 </span>
               </label>
               <p className="text-xs text-gray-500 mt-1 ml-6">
-                Your name will not be visible to the receiver
+                {t('donor.requestDetails.anonymousNote')}
               </p>
             </div>
 
@@ -305,12 +307,12 @@ const RequestDetails = () => {
               {loading ? (
                 <>
                   <FaSpinner className="inline mr-2 animate-spin" />
-                  Processing...
+                  {t('donor.requestDetails.processing')}
                 </>
               ) : (
                 <>
                   <FaHandHoldingHeart className="inline mr-2" />
-                  Donate ${donationAmount || '0'}
+                  {t('donor.requestDetails.donate')} ${donationAmount || '0'}
                 </>
               )}
             </button>
@@ -319,7 +321,7 @@ const RequestDetails = () => {
             <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
               <p className="text-xs text-blue-800">
                 <FaCheckCircle className="inline mr-1" />
-                This request has been verified by our admin team
+                {t('donor.requestDetails.verifiedNote')}
               </p>
             </div>
           </Card>
@@ -331,9 +333,13 @@ const RequestDetails = () => {
         isOpen={showDonateDialog}
         onClose={() => setShowDonateDialog(false)}
         onConfirm={handleDonate}
-        title="Confirm Donation"
-        message={`Are you sure you want to donate $${donationAmount}${isAnonymous ? ' anonymously' : ''} to "${request.title}"?`}
-        confirmText={loading ? 'Processing...' : 'Confirm Donation'}
+        title={t('donor.requestDetails.confirmDonation')}
+        message={t('donor.requestDetails.confirmMessage', { 
+          amount: donationAmount, 
+          anonymous: isAnonymous ? ' ' + t('common.anonymous').toLowerCase() : '',
+          title: request.title 
+        })}
+        confirmText={loading ? t('donor.requestDetails.processing') : t('donor.requestDetails.confirmDonation')}
         type="info"
       />
     </div>

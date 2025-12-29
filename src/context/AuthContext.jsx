@@ -40,11 +40,27 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Check if user is logged in from localStorage
-    const savedUser = localStorage.getItem('seds_user');
+    // Check for user in sessionStorage (session-only, clears on browser close)
+    // This ensures first-visit shows landing page, but users stay logged in during session
+    const savedUser = sessionStorage.getItem('seds_user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        // Validate that the user object has required fields
+        if (parsedUser && parsedUser.id && parsedUser.email && parsedUser.role) {
+          setUser(parsedUser);
+        } else {
+          // Invalid user data, clear it
+          sessionStorage.removeItem('seds_user');
+        }
+      } catch (error) {
+        // Invalid JSON, clear it
+        console.error('Error parsing saved user:', error);
+        sessionStorage.removeItem('seds_user');
+      }
     }
+    // Also clear any old localStorage user data to ensure clean state
+    localStorage.removeItem('seds_user');
     setLoading(false);
   }, []);
 
@@ -59,7 +75,8 @@ export const AuthProvider = ({ children }) => {
           const userData = { ...user };
           delete userData.password; // Don't store password
           setUser(userData);
-          localStorage.setItem('seds_user', JSON.stringify(userData));
+          // Use sessionStorage instead of localStorage for session-only persistence
+          sessionStorage.setItem('seds_user', JSON.stringify(userData));
           resolve(userData);
         } else {
           reject(new Error('Invalid email or password'));
@@ -93,7 +110,8 @@ export const AuthProvider = ({ children }) => {
         const userData = { ...newUser };
         delete userData.password;
         setUser(userData);
-        localStorage.setItem('seds_user', JSON.stringify(userData));
+        // Use sessionStorage instead of localStorage for session-only persistence
+        sessionStorage.setItem('seds_user', JSON.stringify(userData));
         resolve(userData);
       }, 500);
     });
@@ -101,7 +119,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('seds_user');
+    sessionStorage.removeItem('seds_user');
+    localStorage.removeItem('seds_user'); // Clear any old localStorage data too
   };
 
   const value = {

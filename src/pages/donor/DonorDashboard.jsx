@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Card from '../../components/Card';
+import { CardSkeleton } from '../../components/LoadingSkeleton';
 import { dataService } from '../../services/dataService';
-import { FaHandHoldingHeart, FaHistory, FaCheckCircle, FaArrowRight, FaClock } from 'react-icons/fa';
+import { FaHandHoldingHeart, FaHistory, FaCheckCircle, FaArrowRight, FaClock, FaSpinner } from 'react-icons/fa';
 
 const DonorDashboard = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [totalDonated, setTotalDonated] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
+  const [totalDonations, setTotalDonations] = useState(0);
   const [activeRequests, setActiveRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,6 +31,7 @@ const DonorDashboard = () => {
           .reduce((sum, d) => sum + d.amount, 0);
         setTotalDonated(total);
         setCompletedCount(donations.filter(d => d.status === 'completed').length);
+        setTotalDonations(donations.length);
       }
 
       if (requestsResult.success) {
@@ -37,13 +42,31 @@ const DonorDashboard = () => {
     fetchData();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="p-6 md:p-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-text-dark mb-2">
+            {t('donor.dashboard.title', { name: user?.name })}
+          </h1>
+          <p className="text-gray-600">{t('donor.dashboard.subtitle')}</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {[1, 2, 3].map(i => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 md:p-8 animate-fade-in">
       <div className="mb-8 animate-fade-in-up">
         <h1 className="text-3xl font-bold text-text-dark mb-2">
-          Welcome back, {user?.name}!
+          {t('donor.dashboard.title', { name: user?.name })}
         </h1>
-        <p className="text-gray-600">Make a difference with your donations</p>
+        <p className="text-gray-600">{t('donor.dashboard.subtitle')}</p>
       </div>
 
       {/* Stats Cards */}
@@ -54,7 +77,7 @@ const DonorDashboard = () => {
               <FaHandHoldingHeart className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Donated</p>
+              <p className="text-sm text-gray-600">{t('donor.dashboard.totalDonated')}</p>
               <p className="text-2xl font-bold text-text-dark">${totalDonated.toLocaleString()}</p>
             </div>
           </div>
@@ -66,7 +89,7 @@ const DonorDashboard = () => {
               <FaCheckCircle className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Completed</p>
+              <p className="text-sm text-gray-600">{t('donor.dashboard.completed')}</p>
               <p className="text-2xl font-bold text-text-dark">{completedCount}</p>
             </div>
           </div>
@@ -78,8 +101,8 @@ const DonorDashboard = () => {
               <FaHistory className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Donations</p>
-              <p className="text-2xl font-bold text-text-dark">{mockDonations.length}</p>
+              <p className="text-sm text-gray-600">{t('donor.dashboard.totalDonations')}</p>
+              <p className="text-2xl font-bold text-text-dark">{totalDonations}</p>
             </div>
           </div>
         </Card>
@@ -91,12 +114,12 @@ const DonorDashboard = () => {
           <Link to="/donor/requests" className="block">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-semibold text-text-dark mb-2">Browse Requests</h3>
+                <h3 className="text-xl font-semibold text-text-dark mb-2">{t('donor.dashboard.browseRequests')}</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Find verified requests that need your support
+                  {t('donor.dashboard.browseRequestsDesc')}
                 </p>
                 <span className="text-primary font-medium flex items-center">
-                  View Requests <FaArrowRight className="ml-2" />
+                  {t('donor.dashboard.viewRequests')} <FaArrowRight className="ml-2" />
                 </span>
               </div>
               <div className="w-16 h-16 bg-primary bg-opacity-10 rounded-lg flex items-center justify-center">
@@ -110,12 +133,12 @@ const DonorDashboard = () => {
           <Link to="/donor/history" className="block">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-semibold text-text-dark mb-2">Donation History</h3>
+                <h3 className="text-xl font-semibold text-text-dark mb-2">{t('donor.dashboard.donationHistory')}</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Track all your donations and their impact
+                  {t('donor.dashboard.donationHistoryDesc')}
                 </p>
                 <span className="text-primary font-medium flex items-center">
-                  View History <FaArrowRight className="ml-2" />
+                  {t('donor.dashboard.viewHistory')} <FaArrowRight className="ml-2" />
                 </span>
               </div>
               <div className="w-16 h-16 bg-secondary bg-opacity-10 rounded-lg flex items-center justify-center">
@@ -130,9 +153,9 @@ const DonorDashboard = () => {
       {activeRequests.length > 0 && (
         <Card className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-text-dark">Featured Requests</h2>
+            <h2 className="text-xl font-semibold text-text-dark">{t('donor.dashboard.featuredRequests')}</h2>
             <Link to="/donor/requests" className="text-primary hover:text-primary-dark text-sm font-medium">
-              View All
+              {t('common.viewAll')}
             </Link>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
@@ -158,7 +181,7 @@ const DonorDashboard = () => {
                       style={{ width: `${request.progress}%` }}
                     ></div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">{request.progress}% funded</p>
+                  <p className="text-xs text-gray-500 mt-1">{request.progress}% {t('common.funded')}</p>
                 </div>
               </Link>
             ))}

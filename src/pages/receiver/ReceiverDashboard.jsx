@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Card from '../../components/Card';
 import StatusBadge from '../../components/StatusBadge';
@@ -7,6 +8,7 @@ import { mockReceiverRequests } from '../../data/mockData';
 import { FaFileAlt, FaClipboardCheck, FaHandHoldingHeart, FaArrowRight, FaPlus } from 'react-icons/fa';
 
 const ReceiverDashboard = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
 
   const activeRequests = mockReceiverRequests.filter(r => 
@@ -19,9 +21,9 @@ const ReceiverDashboard = () => {
     <div className="p-6 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-text-dark mb-2">
-          Welcome, {user?.name}
+          {t('receiver.dashboard.title', { name: user?.name })}
         </h1>
-        <p className="text-gray-600">Manage your donation requests</p>
+        <p className="text-gray-600">{t('receiver.dashboard.subtitle')}</p>
       </div>
 
       {/* Stats Cards */}
@@ -32,7 +34,7 @@ const ReceiverDashboard = () => {
               <FaFileAlt className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Active Requests</p>
+              <p className="text-sm text-gray-600">{t('receiver.dashboard.activeRequests')}</p>
               <p className="text-2xl font-bold text-text-dark">{activeRequests.length}</p>
             </div>
           </div>
@@ -44,7 +46,7 @@ const ReceiverDashboard = () => {
               <FaClipboardCheck className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Approved</p>
+              <p className="text-sm text-gray-600">{t('receiver.dashboard.approved')}</p>
               <p className="text-2xl font-bold text-text-dark">{approvedRequests.length}</p>
             </div>
           </div>
@@ -56,7 +58,7 @@ const ReceiverDashboard = () => {
               <FaHandHoldingHeart className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Received</p>
+              <p className="text-sm text-gray-600">{t('receiver.dashboard.totalReceived')}</p>
               <p className="text-2xl font-bold text-text-dark">${totalReceived.toLocaleString()}</p>
             </div>
           </div>
@@ -69,12 +71,12 @@ const ReceiverDashboard = () => {
           <Link to="/receiver/request" className="block">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-semibold text-text-dark mb-2">Submit New Request</h3>
+                <h3 className="text-xl font-semibold text-text-dark mb-2">{t('receiver.dashboard.submitNewRequest')}</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Create a new donation request
+                  {t('receiver.dashboard.submitNewRequestDesc')}
                 </p>
                 <span className="text-primary font-medium flex items-center">
-                  Get Started <FaArrowRight className="ml-2" />
+                  {t('receiver.dashboard.getStarted')} <FaArrowRight className="ml-2" />
                 </span>
               </div>
               <div className="w-16 h-16 bg-primary bg-opacity-10 rounded-lg flex items-center justify-center">
@@ -88,12 +90,12 @@ const ReceiverDashboard = () => {
           <Link to="/receiver/status" className="block">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-semibold text-text-dark mb-2">Request Status</h3>
+                <h3 className="text-xl font-semibold text-text-dark mb-2">{t('receiver.dashboard.requestStatus')}</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Track your request progress
+                  {t('receiver.dashboard.requestStatusDesc')}
                 </p>
                 <span className="text-primary font-medium flex items-center">
-                  View Status <FaArrowRight className="ml-2" />
+                  {t('receiver.dashboard.viewStatus')} <FaArrowRight className="ml-2" />
                 </span>
               </div>
               <div className="w-16 h-16 bg-secondary bg-opacity-10 rounded-lg flex items-center justify-center">
@@ -108,9 +110,9 @@ const ReceiverDashboard = () => {
       {mockReceiverRequests.length > 0 && (
         <Card>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-text-dark">Your Requests</h2>
+            <h2 className="text-xl font-semibold text-text-dark">{t('receiver.dashboard.yourRequests')}</h2>
             <Link to="/receiver/status" className="text-primary hover:text-primary-dark text-sm font-medium">
-              View All
+              {t('common.viewAll')}
             </Link>
           </div>
           <div className="space-y-4">

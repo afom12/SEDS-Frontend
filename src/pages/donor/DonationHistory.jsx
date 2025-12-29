@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import StatusBadge from '../../components/StatusBadge';
 import EmptyState from '../../components/EmptyState';
@@ -6,6 +7,7 @@ import { mockDonations, mockDonationRequests } from '../../data/mockData';
 import { FaHandHoldingHeart, FaCalendarAlt, FaLock, FaUser, FaSearch } from 'react-icons/fa';
 
 const DonationHistory = () => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
@@ -45,8 +47,8 @@ const DonationHistory = () => {
   return (
     <div className="p-6 md:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-text-dark mb-2">Donation History</h1>
-        <p className="text-gray-600">Track all your donations and their impact</p>
+        <h1 className="text-3xl font-bold text-text-dark mb-2">{t('donor.donationHistory.title')}</h1>
+        <p className="text-gray-600">{t('donor.donationHistory.subtitle')}</p>
       </div>
 
       {/* Summary Cards */}
@@ -57,7 +59,7 @@ const DonationHistory = () => {
               <FaHandHoldingHeart className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Donated</p>
+              <p className="text-sm text-gray-600">{t('donor.dashboard.totalDonated')}</p>
               <p className="text-2xl font-bold text-text-dark">${totalDonated.toLocaleString()}</p>
             </div>
           </div>
@@ -69,7 +71,7 @@ const DonationHistory = () => {
               <FaHandHoldingHeart className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Donations</p>
+              <p className="text-sm text-gray-600">{t('donor.dashboard.totalDonations')}</p>
               <p className="text-2xl font-bold text-text-dark">{mockDonations.length}</p>
             </div>
           </div>
@@ -81,7 +83,7 @@ const DonationHistory = () => {
               <FaHandHoldingHeart className="text-white text-xl" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Completed</p>
+              <p className="text-sm text-gray-600">{t('donor.dashboard.completed')}</p>
               <p className="text-2xl font-bold text-text-dark">
                 {mockDonations.filter(d => d.status === 'completed').length}
               </p>
@@ -97,7 +99,7 @@ const DonationHistory = () => {
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Search donations..."
+              placeholder={t('donor.donationHistory.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
@@ -108,10 +110,10 @@ const DonationHistory = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white"
           >
-            <option value="all">All Status</option>
-            <option value="completed">Completed</option>
-            <option value="pending">Pending</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="all">{t('donor.donationHistory.allStatus')}</option>
+            <option value="completed">{t('donor.dashboard.completed')}</option>
+            <option value="pending">{t('common.pending')}</option>
+            <option value="cancelled">{t('common.cancelled')}</option>
           </select>
         </div>
       </Card>
@@ -120,8 +122,8 @@ const DonationHistory = () => {
       {filteredDonations.length === 0 ? (
         <EmptyState
           icon={FaHandHoldingHeart}
-          title="No donations found"
-          message="Start making a difference by browsing verified requests."
+          title={t('donor.donationHistory.noDonations')}
+          message={t('donor.donationHistory.noDonationsDesc')}
         />
       ) : (
         <div className="space-y-4">

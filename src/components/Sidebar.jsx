@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import {
   FaHome,
@@ -13,28 +14,29 @@ import {
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const location = useLocation();
 
   const donorMenu = [
-    { path: '/donor/dashboard', label: 'Dashboard', icon: FaHome },
-    { path: '/donor/requests', label: 'Browse Requests', icon: FaHandHoldingHeart },
-    { path: '/donor/history', label: 'Donation History', icon: FaHistory },
+    { path: '/donor/dashboard', label: t('nav.dashboard'), icon: FaHome },
+    { path: '/donor/requests', label: t('donor.dashboard.browseRequests'), icon: FaHandHoldingHeart },
+    { path: '/donor/history', label: t('donor.dashboard.donationHistory'), icon: FaHistory },
   ];
 
   const receiverMenu = [
-    { path: '/receiver/dashboard', label: 'Dashboard', icon: FaHome },
-    { path: '/receiver/request', label: 'Submit Request', icon: FaFileAlt },
-    { path: '/receiver/status', label: 'Request Status', icon: FaClipboardCheck },
-    { path: '/receiver/profile', label: 'Profile', icon: FaUsers },
+    { path: '/receiver/dashboard', label: t('nav.dashboard'), icon: FaHome },
+    { path: '/receiver/request', label: t('receiver.submitRequest.title'), icon: FaFileAlt },
+    { path: '/receiver/status', label: t('receiver.dashboard.requestStatus'), icon: FaClipboardCheck },
+    { path: '/receiver/profile', label: t('receiver.profile.title'), icon: FaUsers },
   ];
 
   const adminMenu = [
-    { path: '/admin/dashboard', label: 'Dashboard', icon: FaHome },
-    { path: '/admin/requests', label: 'Review Requests', icon: FaClipboardCheck },
-    { path: '/admin/users', label: 'User Management', icon: FaUsers },
-    { path: '/admin/analytics', label: 'Analytics', icon: FaChartBar },
-    { path: '/admin/logs', label: 'Activity Logs', icon: FaFileAlt },
+    { path: '/admin/dashboard', label: t('nav.dashboard'), icon: FaHome },
+    { path: '/admin/requests', label: t('admin.reviewRequests.title'), icon: FaClipboardCheck },
+    { path: '/admin/users', label: t('admin.userManagement.title'), icon: FaUsers },
+    { path: '/admin/analytics', label: t('admin.analytics.title'), icon: FaChartBar },
+    { path: '/admin/logs', label: t('admin.activityLogs.title'), icon: FaFileAlt },
   ];
 
   const getMenuItems = () => {

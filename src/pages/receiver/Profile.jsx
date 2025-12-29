@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import Card from '../../components/Card';
 import Alert from '../../components/Alert';
 import { FaUser, FaEnvelope, FaMapMarkerAlt, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 
 const Profile = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -54,23 +56,23 @@ const Profile = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-text-dark mb-2">Profile & Household Info</h1>
-            <p className="text-gray-600">Manage your personal information</p>
+            <h1 className="text-3xl font-bold text-text-dark mb-2">{t('receiver.profile.title')}</h1>
+            <p className="text-gray-600">{t('receiver.profile.subtitle')}</p>
           </div>
           {!isEditing ? (
             <button onClick={() => setIsEditing(true)} className="btn-outline">
               <FaEdit className="inline mr-2" />
-              Edit Profile
+              {t('receiver.profile.editProfile')}
             </button>
           ) : (
             <div className="flex gap-2">
               <button onClick={handleCancel} className="btn-outline">
                 <FaTimes className="inline mr-2" />
-                Cancel
+                {t('common.cancel')}
               </button>
               <button onClick={handleSave} className="btn-primary">
                 <FaSave className="inline mr-2" />
-                Save Changes
+                {t('receiver.profile.saveChanges')}
               </button>
             </div>
           )}
@@ -80,7 +82,7 @@ const Profile = () => {
       {showSuccess && (
         <Alert
           type="success"
-          message="Profile updated successfully!"
+          message={t('receiver.profile.successMessage')}
           onClose={() => setShowSuccess(false)}
           className="mb-6"
         />
@@ -89,11 +91,11 @@ const Profile = () => {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Personal Information */}
         <Card>
-          <h2 className="text-xl font-semibold text-text-dark mb-6">Personal Information</h2>
+          <h2 className="text-xl font-semibold text-text-dark mb-6">{t('receiver.profile.personalInfo')}</h2>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Full Name
+                {t('receiver.profile.fullName')}
               </label>
               {isEditing ? (
                 <input
@@ -106,14 +108,14 @@ const Profile = () => {
               ) : (
                 <div className="flex items-center text-gray-900">
                   <FaUser className="mr-2 text-gray-400" />
-                  {formData.name || 'Not provided'}
+                  {formData.name || t('receiver.profile.notProvided')}
                 </div>
               )}
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email Address
+                {t('receiver.profile.emailAddress')}
               </label>
               {isEditing ? (
                 <input
@@ -133,7 +135,7 @@ const Profile = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Phone Number
+                {t('receiver.profile.phoneNumber')}
               </label>
               {isEditing ? (
                 <input
@@ -141,7 +143,7 @@ const Profile = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+251 XXX XXX XXX"
+                  placeholder={t('receiver.profile.phonePlaceholder')}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               ) : (
@@ -155,7 +157,7 @@ const Profile = () => {
 
         {/* Address Information */}
         <Card>
-          <h2 className="text-xl font-semibold text-text-dark mb-6">Address Information</h2>
+          <h2 className="text-xl font-semibold text-text-dark mb-6">{t('receiver.profile.addressInfo')}</h2>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -221,7 +223,7 @@ const Profile = () => {
 
         {/* Household Information */}
         <Card className="md:col-span-2">
-          <h2 className="text-xl font-semibold text-text-dark mb-6">Household Information</h2>
+          <h2 className="text-xl font-semibold text-text-dark mb-6">{t('receiver.profile.householdInfo')}</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
