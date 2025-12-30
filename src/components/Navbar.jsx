@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 import { FaBars, FaTimes, FaHandHoldingHeart } from 'react-icons/fa';
 
 const Navbar = () => {
@@ -27,7 +28,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-40">
+    <nav className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -85,25 +86,26 @@ const Navbar = () => {
                 </button>
               </>
             )}
-            {/* Language Toggle */}
-            <div className="flex items-center space-x-2 border-l border-gray-200 pl-4">
+            {/* Language Toggle & Theme Toggle */}
+            <div className="flex items-center space-x-2 border-l border-gray-200 dark:border-gray-700 pl-4">
+              <ThemeToggle />
               <button
                 onClick={() => changeLanguage('en')}
                 className={`px-2 py-1 text-sm font-medium transition-colors ${
                   i18n.language === 'en'
                     ? 'text-primary font-bold'
-                    : 'text-gray-500 hover:text-text'
+                    : 'text-gray-500 hover:text-text dark:text-gray-400 dark:hover:text-gray-200'
                 }`}
               >
                 EN
               </button>
-              <span className="text-gray-300">|</span>
+              <span className="text-gray-300 dark:text-gray-600">|</span>
               <button
                 onClick={() => changeLanguage('am')}
                 className={`px-2 py-1 text-sm font-medium transition-colors ${
                   i18n.language === 'am'
                     ? 'text-primary font-bold'
-                    : 'text-gray-500 hover:text-text'
+                    : 'text-gray-500 hover:text-text dark:text-gray-400 dark:hover:text-gray-200'
                 }`}
               >
                 አማ
@@ -169,9 +171,10 @@ const Navbar = () => {
                   </button>
                 </>
               )}
-              {/* Mobile Language Toggle */}
-              <div className="flex items-center space-x-2 pt-2 border-t border-gray-200">
-                <span className="text-sm text-gray-500">Language:</span>
+              {/* Mobile Language Toggle & Theme */}
+              <div className="flex items-center space-x-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                <ThemeToggle />
+                <span className="text-sm text-gray-500 dark:text-gray-400">Language:</span>
                 <button
                   onClick={() => {
                     changeLanguage('en');

@@ -154,7 +154,38 @@
     "remaining": "የቀረ",
     "raised": "የተሰበሰበ",
     "of": "ከ",
-    "cancelled": "ተቋርጧል"
+    "cancelled": "ተቋርጧል",
+    "filters": "አጣሪዎች",
+    "clearFilters": "ሁሉንም አጥፋ",
+    "export": "ወደ ውጭ ላክ",
+    "exportCSV": "CSV ወደ ውጭ ላክ",
+    "exportJSON": "JSON ወደ ውጭ ላክ",
+    "printPDF": "PDF ማተም",
+    "share": "አጋራ"
+  },
+  "error": {
+    "title": "የሆነ ነገር ተሳስቷል",
+    "message": "ያልተጠበቀ ስህተት ተጋግሞናል። እባክዎ እንደገና ይሞክሩ።",
+    "retry": "እንደገና ሞክር",
+    "goHome": "ወደ መነሻ ሂድ"
+  },
+  "shortcuts": {
+    "title": "የቁልፍ ቦርድ አሻሚዎች",
+    "search": "ፍለጋ ላይ ማተኮር",
+    "close": "ሞዳል/ዲያሎግ ዝጋ",
+    "dashboard": "ወደ ዳሽቦርድ ሂድ",
+    "home": "ወደ መነሻ ሂድ",
+    "logout": "ውጣ",
+    "help": "እርዳታ አሳይ"
+  },
+  "share": {
+    "copied": "አገናኝ ወደ ቅንጥብ ቦርድ ተቅድቧል!",
+    "copyError": "አገናኝ ለመቅዳት አልተሳካም",
+    "copyLink": "አገናኝ ቅዳ",
+    "share": "አጋራ..."
+  },
+  "accessibility": {
+    "skipToContent": "ወደ ዋናው ይዘት ዝለል"
   },
   "donor": {
     "dashboard": {

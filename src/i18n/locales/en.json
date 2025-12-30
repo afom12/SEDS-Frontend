@@ -154,7 +154,38 @@
     "remaining": "Remaining",
     "raised": "Raised",
     "of": "of",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "filters": "Filters",
+    "clearFilters": "Clear all",
+    "export": "Export",
+    "exportCSV": "Export CSV",
+    "exportJSON": "Export JSON",
+    "printPDF": "Print PDF",
+    "share": "Share"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "message": "We encountered an unexpected error. Please try again.",
+    "retry": "Try Again",
+    "goHome": "Go Home"
+  },
+  "shortcuts": {
+    "title": "Keyboard Shortcuts",
+    "search": "Focus search",
+    "close": "Close modal/dialog",
+    "dashboard": "Go to dashboard",
+    "home": "Go to home",
+    "logout": "Logout",
+    "help": "Show help"
+  },
+  "share": {
+    "copied": "Link copied to clipboard!",
+    "copyError": "Failed to copy link",
+    "copyLink": "Copy Link",
+    "share": "Share..."
+  },
+  "accessibility": {
+    "skipToContent": "Skip to main content"
   },
   "donor": {
     "dashboard": {

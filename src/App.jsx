@@ -1,35 +1,54 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
+import SkipToContent from './components/SkipToContent';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+import useKeyboardShortcuts from './hooks/useKeyboardShortcuts';
 
-// Pages
-import Landing from './pages/Landing';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
+// Component to handle keyboard shortcuts (must be inside Router)
+const KeyboardShortcutsHandler = () => {
+  useKeyboardShortcuts();
+  return null;
+};
+
+// Pages - Lazy loaded for better performance
+const Landing = React.lazy(() => import('./pages/Landing'));
+const Login = React.lazy(() => import('./pages/auth/Login'));
+const Register = React.lazy(() => import('./pages/auth/Register'));
 
 // Donor Pages
-import DonorDashboard from './pages/donor/DonorDashboard';
-import BrowseRequests from './pages/donor/BrowseRequests';
-import RequestDetails from './pages/donor/RequestDetails';
-import DonationHistory from './pages/donor/DonationHistory';
+const DonorDashboard = React.lazy(() => import('./pages/donor/DonorDashboard'));
+const BrowseRequests = React.lazy(() => import('./pages/donor/BrowseRequests'));
+const RequestDetails = React.lazy(() => import('./pages/donor/RequestDetails'));
+const DonationHistory = React.lazy(() => import('./pages/donor/DonationHistory'));
 
 // Receiver Pages
-import ReceiverDashboard from './pages/receiver/ReceiverDashboard';
-import SubmitRequest from './pages/receiver/SubmitRequest';
-import RequestStatus from './pages/receiver/RequestStatus';
-import Profile from './pages/receiver/Profile';
+const ReceiverDashboard = React.lazy(() => import('./pages/receiver/ReceiverDashboard'));
+const SubmitRequest = React.lazy(() => import('./pages/receiver/SubmitRequest'));
+const RequestStatus = React.lazy(() => import('./pages/receiver/RequestStatus'));
+const Profile = React.lazy(() => import('./pages/receiver/Profile'));
 
 // Admin Pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import ReviewRequests from './pages/admin/ReviewRequests';
-import UserManagement from './pages/admin/UserManagement';
-import Analytics from './pages/admin/Analytics';
-import ActivityLogs from './pages/admin/ActivityLogs';
+const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'));
+const ReviewRequests = React.lazy(() => import('./pages/admin/ReviewRequests'));
+const UserManagement = React.lazy(() => import('./pages/admin/UserManagement'));
+const Analytics = React.lazy(() => import('./pages/admin/Analytics'));
+const ActivityLogs = React.lazy(() => import('./pages/admin/ActivityLogs'));
+
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+      <p className="text-gray-600">Loading...</p>
+    </div>
+  </div>
+);
 
 const DashboardLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -39,7 +58,7 @@ const DashboardLayout = ({ children }) => {
       <Navbar />
       <div className="flex flex-1 pt-16">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <main className="flex-1 md:ml-64 bg-background min-h-screen">
+        <main id="main-content" className="flex-1 md:ml-64 bg-background dark:bg-gray-900 min-h-screen" tabIndex={-1}>
           <div className="md:hidden p-4">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -68,41 +87,41 @@ const DashboardLayout = ({ children }) => {
   );
 };
 
-function App() {
+function AppContent() {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <Router>
-        <Routes>
+    <Router>
+      <KeyboardShortcutsHandler />
+      <SkipToContent />
+      <Routes>
           {/* Public Routes */}
           <Route
             path="/"
             element={
-              <>
+              <Suspense fallback={<PageLoader />}>
                 <Navbar />
                 <Landing />
                 <Footer />
-              </>
+              </Suspense>
             }
           />
           <Route
             path="/login"
             element={
-              <>
+              <Suspense fallback={<PageLoader />}>
                 <Navbar />
                 <Login />
                 <Footer />
-              </>
+              </Suspense>
             }
           />
           <Route
             path="/register"
             element={
-              <>
+              <Suspense fallback={<PageLoader />}>
                 <Navbar />
                 <Register />
                 <Footer />
-              </>
+              </Suspense>
             }
           />
 
@@ -112,7 +131,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['donor']}>
                 <DashboardLayout>
-                  <DonorDashboard />
+                  <Suspense fallback={<PageLoader />}>
+                    <DonorDashboard />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -122,7 +143,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['donor']}>
                 <DashboardLayout>
-                  <BrowseRequests />
+                  <Suspense fallback={<PageLoader />}>
+                    <BrowseRequests />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -132,7 +155,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['donor']}>
                 <DashboardLayout>
-                  <RequestDetails />
+                  <Suspense fallback={<PageLoader />}>
+                    <RequestDetails />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -142,7 +167,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['donor']}>
                 <DashboardLayout>
-                  <DonationHistory />
+                  <Suspense fallback={<PageLoader />}>
+                    <DonationHistory />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -152,7 +179,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['donor']}>
                 <DashboardLayout>
-                  <DonorDashboard />
+                  <Suspense fallback={<PageLoader />}>
+                    <DonorDashboard />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -164,7 +193,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['receiver']}>
                 <DashboardLayout>
-                  <ReceiverDashboard />
+                  <Suspense fallback={<PageLoader />}>
+                    <ReceiverDashboard />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -174,7 +205,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['receiver']}>
                 <DashboardLayout>
-                  <SubmitRequest />
+                  <Suspense fallback={<PageLoader />}>
+                    <SubmitRequest />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -184,7 +217,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['receiver']}>
                 <DashboardLayout>
-                  <RequestStatus />
+                  <Suspense fallback={<PageLoader />}>
+                    <RequestStatus />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -194,7 +229,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['receiver']}>
                 <DashboardLayout>
-                  <Profile />
+                  <Suspense fallback={<PageLoader />}>
+                    <Profile />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -204,7 +241,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['receiver']}>
                 <DashboardLayout>
-                  <ReceiverDashboard />
+                  <Suspense fallback={<PageLoader />}>
+                    <ReceiverDashboard />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -216,7 +255,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
-                  <AdminDashboard />
+                  <Suspense fallback={<PageLoader />}>
+                    <AdminDashboard />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -226,7 +267,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
-                  <ReviewRequests />
+                  <Suspense fallback={<PageLoader />}>
+                    <ReviewRequests />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -236,7 +279,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
-                  <UserManagement />
+                  <Suspense fallback={<PageLoader />}>
+                    <UserManagement />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -246,7 +291,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
-                  <Analytics />
+                  <Suspense fallback={<PageLoader />}>
+                    <Analytics />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -256,7 +303,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
-                  <ActivityLogs />
+                  <Suspense fallback={<PageLoader />}>
+                    <ActivityLogs />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -266,7 +315,9 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
-                  <AdminDashboard />
+                  <Suspense fallback={<PageLoader />}>
+                    <AdminDashboard />
+                  </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>
             }
@@ -276,9 +327,32 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
-      </ToastProvider>
-    </AuthProvider>
   );
+}
+
+function App() {
+  console.log('App component rendering...');
+  try {
+    return (
+      <ErrorBoundary>
+        <ThemeProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <AppContent />
+            </ToastProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
+    );
+  } catch (error) {
+    console.error('Error in App component:', error);
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h1>Application Error</h1>
+        <p>{error.message}</p>
+      </div>
+    );
+  }
 }
 
 export default App;
