@@ -200,7 +200,7 @@ const RegisterWithVerification = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/3 via-background to-secondary/3 flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
         {/* Progress Indicator */}
         <div className="mb-8">
@@ -240,7 +240,7 @@ const RegisterWithVerification = () => {
             <h1 className="text-3xl font-bold text-text-dark mb-2">
               {t('auth.register.title', 'Create Your Account')}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               {t('auth.register.subtitle', 'Join our community to help or receive help')}
             </p>
           </div>
@@ -317,7 +317,7 @@ const RegisterWithVerification = () => {
                   onChange={handleChange}
                   className="mt-1 mr-3"
                 />
-                <label htmlFor="agreeToTerms" className="text-sm text-gray-600">
+                <label htmlFor="agreeToTerms" className="text-sm text-gray-600 dark:text-gray-300">
                   I agree to the{' '}
                   <Link to="/terms" className="text-primary hover:underline">
                     Terms of Service
@@ -348,7 +348,7 @@ const RegisterWithVerification = () => {
                 <h2 className="text-2xl font-semibold text-text-dark mb-2">
                   How do you want to use this platform?
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   Select the role that best describes you. You can change this later.
                 </p>
               </div>
@@ -372,7 +372,7 @@ const RegisterWithVerification = () => {
                     >
                       <div className="flex items-center mb-3">
                         <div className={`w-12 h-12 rounded-lg flex items-center justify-center mr-3 ${
-                          formData.role === role.value ? 'bg-current text-white' : 'bg-gray-100 text-gray-600'
+                          formData.role === role.value ? 'bg-current text-white' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200'
                         }`}>
                           <Icon className="text-xl" />
                         </div>
@@ -399,7 +399,7 @@ const RegisterWithVerification = () => {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                  className="flex-1 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 py-3 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   ← Back
                 </button>
@@ -422,16 +422,16 @@ const RegisterWithVerification = () => {
                 <div className="flex items-start">
                   <FaShieldAlt className="text-blue-600 text-xl mr-3 mt-1" />
                   <div>
-                    <h3 className="font-semibold text-blue-900 mb-2">Account Verification Required</h3>
-                    <p className="text-sm text-blue-800">
+                    <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Account Verification Required</h3>
+                    <p className="text-sm text-blue-800 dark:text-blue-200">
                       After registration, your account will be <strong>Unverified</strong>. You'll need to:
                     </p>
-                    <ul className="text-sm text-blue-800 mt-2 list-disc list-inside space-y-1">
+                    <ul className="text-sm text-blue-800 dark:text-blue-200 mt-2 list-disc list-inside space-y-1">
                       <li>Complete your profile</li>
                       <li>Upload identification documents</li>
                       <li>Wait for admin/organization approval</li>
                     </ul>
-                    <p className="text-sm text-blue-800 mt-2 font-semibold">
+                    <p className="text-sm text-blue-800 dark:text-blue-200 mt-2 font-semibold">
                       ⚠️ You cannot request or provide aid until verified.
                     </p>
                   </div>
@@ -450,7 +450,7 @@ const RegisterWithVerification = () => {
                   />
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                       Organization Type
                     </label>
                     <select
@@ -475,7 +475,7 @@ const RegisterWithVerification = () => {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                  className="flex-1 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 py-3 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   ← Back
                 </button>
@@ -491,7 +491,7 @@ const RegisterWithVerification = () => {
           )}
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               Already have an account?{' '}
               <Link to="/login" className="text-primary hover:underline font-semibold">
                 Sign in

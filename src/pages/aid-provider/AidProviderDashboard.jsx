@@ -204,24 +204,6 @@ const AidProviderDashboard = () => {
             </div>
           </Link>
         </Card>
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-semibold text-text-dark mb-2">
-                  {t('aidProvider.dashboard.createOffer', 'Offer Aid')}
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  {t('aidProvider.dashboard.createOfferDesc', 'Offer food, clothing, medical aid, or other assistance')}
-                </p>
-                <span className="text-primary font-medium flex items-center">
-                  {t('common.getStarted')} <FaArrowRight className="ml-2" />
-                </span>
-              </div>
-              <div className="w-16 h-16 bg-primary bg-opacity-10 rounded-lg flex items-center justify-center">
-                <FaPlus className="text-primary text-2xl" />
-              </div>
-            </div>
-          </Link>
-        </Card>
 
         <Card className="hover:shadow-xl transition-shadow cursor-pointer">
           <Link to="/aid-provider/requests" className="block">

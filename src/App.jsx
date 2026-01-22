@@ -125,7 +125,6 @@ function AppContent() {
               <Suspense fallback={<PageLoader />}>
                 <Navbar />
                 <Login />
-                <Footer />
               </Suspense>
             }
           />
@@ -135,7 +134,6 @@ function AppContent() {
               <Suspense fallback={<PageLoader />}>
                 <Navbar />
                 <RegisterWithVerification />
-                <Footer />
               </Suspense>
             }
           />
@@ -145,7 +143,6 @@ function AppContent() {
               <Suspense fallback={<PageLoader />}>
                 <Navbar />
                 <Register />
-                <Footer />
               </Suspense>
             }
           />

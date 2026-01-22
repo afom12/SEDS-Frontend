@@ -442,12 +442,17 @@
       "title": "Welcome Back",
       "subtitle": "Sign in to continue to SEDS",
       "email": "Email address",
+      "emailPlaceholder": "you@example.com",
       "password": "Password",
+      "passwordPlaceholder": "••••••••",
       "rememberMe": "Remember me",
       "forgotPassword": "Forgot password?",
       "signIn": "Sign in",
       "signingIn": "Signing in...",
       "demoAccounts": "Demo Accounts",
+      "demoAdmin": "Admin",
+      "demoDonor": "Donor",
+      "demoReceiver": "Receiver",
       "noAccount": "Don't have an account?",
       "signUp": "Sign up"
     },
@@ -455,15 +460,26 @@
       "title": "Create Account",
       "subtitle": "Join SEDS and start making a difference",
       "fullName": "Full Name",
+      "namePlaceholder": "John Doe",
       "email": "Email address",
+      "emailPlaceholder": "you@example.com",
       "iWantTo": "I want to",
       "donateHelp": "Donate / Help Others",
       "requestHelp": "Request Help",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
       "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "••••••••",
       "createAccount": "Create Account",
       "creatingAccount": "Creating account...",
       "hasAccount": "Already have an account?",
       "signIn": "Sign in"
+    },
+    "errors": {
+      "loginFailed": "Failed to login. Please check your credentials.",
+      "registerFailed": "Failed to register. Please try again.",
+      "passwordsNoMatch": "Passwords do not match",
+      "passwordMin": "Password must be at least 6 characters"
     }
   }
 }

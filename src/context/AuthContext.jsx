@@ -148,13 +148,16 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password, name, role) => {
     try {
       // Try API first
+      // Backend expects username instead of name, and role is optional (defaults to 'donor')
       const response = await apiClient.post(API_CONFIG.ENDPOINTS.AUTH.REGISTER, {
         email,
         password,
-        name,
+        username: name || email.split('@')[0], // Use name as username, or derive from email
+        fullName: name, // Also send fullName for the user's display name
         role: role || 'donor',
       });
 
+      // Backend returns { statusCode, data: { user, accessToken, refreshToken }, message, success }
       if (response.success && response.data) {
         const { user: userData, accessToken, refreshToken } = response.data;
         

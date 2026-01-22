@@ -87,7 +87,7 @@ class ApiClient {
         throw new Error('No refresh token available');
       }
 
-      const response = await fetch(`${this.baseURL}/auth/refresh`, {
+      const response = await fetch(`${this.baseURL}/auth/refresh-token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

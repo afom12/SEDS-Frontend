@@ -3,7 +3,7 @@ export const API_CONFIG = {
   // Base URL for the backend API
   // In development, this will use VITE_API_URL from .env
   // Fallback to localhost:3000 if not set
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1',
   
   // API endpoints
   ENDPOINTS: {
@@ -12,25 +12,52 @@ export const API_CONFIG = {
       LOGIN: '/auth/login',
       REGISTER: '/auth/register',
       LOGOUT: '/auth/logout',
-      REFRESH: '/auth/refresh',
+      REFRESH: '/auth/refresh-token',
       ME: '/auth/me',
+      CURRENT_USER: '/auth/current-user',
+      VERIFY_EMAIL: (token) => `/auth/verify-email/${token}`,
+      FORGOT_PASSWORD: '/auth/forgot-password',
+      RESET_PASSWORD: (token) => `/auth/reset-password/${token}`,
+      CHANGE_PASSWORD: '/auth/change-password',
+      RESEND_VERIFICATION: '/auth/resend-email-verification',
     },
     
-    // Donation Requests
+    // Items (Donations/Items)
+    ITEMS: {
+      BASE: '/items',
+      ADMIN: '/items/admin',
+      BY_ID: (id) => `/items/${id}`,
+      APPROVE: (id) => `/items/${id}/approve`,
+      REJECT: (id) => `/items/${id}/reject`,
+    },
+    
+    // Requests
     REQUESTS: {
       BASE: '/requests',
-      PUBLIC: '/requests/public',
-      BY_ID: (id) => `/requests/${id}`,
-      SUBMIT: (id) => `/requests/${id}/submit`,
-      RECEIVER_REQUESTS: '/requests/receiver',
+      INCOMING: '/requests/incoming',
+      OUTGOING: '/requests/outgoing',
+      BY_ITEM_ID: (itemId) => `/requests/${itemId}`,
+      APPROVE: (id) => `/requests/${id}/approve`,
+      REJECT: (id) => `/requests/${id}/reject`,
     },
     
-    // Donations
-    DONATIONS: {
-      BASE: '/donations',
-      BY_ID: (id) => `/donations/${id}`,
-      CREATE: '/donations',
-      HISTORY: '/donations/history',
+    // Categories
+    CATEGORIES: {
+      BASE: '/categories',
+      BY_ID: (id) => `/categories/${id}`,
+    },
+    
+    // Complaints
+    COMPLAINTS: {
+      BASE: '/complaints',
+      RESOLVE: (id) => `/complaints/${id}/resolve`,
+    },
+    
+    // Notifications
+    NOTIFICATIONS: {
+      BASE: '/notifications',
+      MARK_READ: (id) => `/notifications/${id}/read`,
+      ANNOUNCEMENT: '/notifications/announcement',
     },
     
     // Users
@@ -43,70 +70,34 @@ export const API_CONFIG = {
     
     // Admin
     ADMIN: {
-      ANALYTICS: '/admin/analytics',
-      ACTIVITY_LOGS: '/admin/logs',
-      STATS: '/admin/stats',
-      APPROVE_REQUEST: (id) => `/admin/requests/${id}/approve`,
-      REJECT_REQUEST: (id) => `/admin/requests/${id}/reject`,
-      VERIFY_USER: (id) => `/admin/users/${id}/verify`,
       USERS: '/admin/users',
       USER_BY_ID: (id) => `/admin/users/${id}`,
+      VERIFY_USER: (id) => `/admin/users/${id}/verify`,
+      SUSPEND_USER: (id) => `/admin/users/${id}/suspend`,
+      UPDATE_USER_ROLE: (id) => `/admin/users/${id}/role`,
+      DELETE_USER: (id) => `/admin/users/${id}`,
     },
     
-    // Payments
-    PAYMENTS: {
-      CREATE_INTENT: '/payments/intent',
-      CONFIRM: '/payments/confirm',
-      STATUS: (donationId) => `/payments/status/${donationId}`,
+    // Health Check
+    HEALTH: {
+      BASE: '/healthcheck',
     },
     
-    // Transparency (Public)
-    TRANSPARENCY: {
-      LEDGER: '/transparency/ledger',
-      REQUEST: (id) => `/transparency/requests/${id}`,
-      STATS: '/transparency/stats',
+    // Reports
+    REPORTS: {
+      BASE: '/reports',
     },
     
-    // User Profile
-    USER: {
-      PROFILE: '/users/profile',
-      DOCUMENTS: '/users/documents',
+    // Legacy endpoints for backward compatibility
+    DONATIONS: {
+      BASE: '/items', // Maps to items
+      BY_ID: (id) => `/items/${id}`,
+      CREATE: '/items',
+      HISTORY: '/items',
     },
     
-    // Documents
-    DOCUMENTS: {
-      BASE: '/documents',
-      UPLOAD: '/documents/upload',
-      VERIFY: (id) => `/documents/${id}/verify`,
-      BY_ID: (id) => `/documents/${id}`,
-    },
-    
-    // Aid Coordination
-    AID_TYPES: {
-      BASE: '/aid-types',
-      BY_ID: (id) => `/aid-types/${id}`,
-    },
-    AID_OFFERS: {
-      BASE: '/aid-offers',
-      AVAILABLE: '/aid-offers/available',
-      BY_ID: (id) => `/aid-offers/${id}`,
-      ACCEPT: (id) => `/aid-offers/${id}/accept`,
-      CANCEL: (id) => `/aid-offers/${id}/cancel`,
-    },
-    DELIVERIES: {
-      BASE: '/deliveries',
-      BY_ID: (id) => `/deliveries/${id}`,
-      STATUS: (id) => `/deliveries/${id}/status`,
-      CONFIRM: (id) => `/deliveries/${id}/confirm`,
-      PROOF: (id) => `/deliveries/${id}/proof`,
-    },
-    ORGANIZATIONS: {
-      BASE: '/organizations',
-      BY_ID: (id) => `/organizations/${id}`,
-      VERIFY: (id) => `/organizations/${id}/verify`,
-      MEMBERS: (id) => `/organizations/${id}/members`,
-      REQUESTS: (id) => `/organizations/${id}/requests`,
-    },
+    // Legacy request endpoints
+    RECEIVER_REQUESTS: '/requests/incoming',
   },
   
   // Request timeout in milliseconds

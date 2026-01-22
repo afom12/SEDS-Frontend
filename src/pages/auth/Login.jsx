@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { FaEnvelope, FaLock, FaSpinner } from 'react-icons/fa';
 
 const Login = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,7 +27,7 @@ const Login = () => {
       const role = user.role.toLowerCase();
       navigate(`/${role}/dashboard`, { replace: true });
     } catch (err) {
-      setError(err.message || 'Failed to login. Please check your credentials.');
+      setError(err.message || t('auth.errors.loginFailed', 'Failed to login. Please check your credentials.'));
     } finally {
       setLoading(false);
     }
@@ -46,10 +48,10 @@ const Login = () => {
               </div>
             </div>
             <h2 className="text-3xl font-bold text-text-dark mb-2">
-              Welcome Back
+              {t('auth.login.title', 'Welcome Back')}
             </h2>
             <p className="text-gray-600 text-sm">
-              Sign in to continue to SEDS
+              {t('auth.login.subtitle', 'Sign in to continue to SEDS')}
             </p>
           </div>
 
@@ -63,7 +65,7 @@ const Login = () => {
           <div className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                Email address
+                {t('auth.login.email', 'Email address')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -76,7 +78,7 @@ const Login = () => {
                   autoComplete="email"
                   required
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all"
-                  placeholder="you@example.com"
+                  placeholder={t('auth.login.emailPlaceholder', 'you@example.com')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -85,7 +87,7 @@ const Login = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
-                Password
+                {t('auth.login.password', 'Password')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -98,7 +100,7 @@ const Login = () => {
                   autoComplete="current-password"
                   required
                   className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all"
-                  placeholder="••••••••"
+                  placeholder={t('auth.login.passwordPlaceholder', '••••••••')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -115,13 +117,13 @@ const Login = () => {
                 className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
               />
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600">
-                Remember me
+                {t('auth.login.rememberMe', 'Remember me')}
               </label>
             </div>
 
             <div className="text-sm">
               <a href="#" className="font-medium text-primary hover:text-primary-dark">
-                Forgot password?
+                {t('auth.login.forgotPassword', 'Forgot password?')}
               </a>
             </div>
           </div>
@@ -135,10 +137,10 @@ const Login = () => {
               {loading ? (
                 <>
                   <FaSpinner className="animate-spin mr-2" />
-                  Signing in...
+                  {t('auth.login.signingIn', 'Signing in...')}
                 </>
               ) : (
-                'Sign in'
+                t('auth.login.signIn', 'Sign in')
               )}
             </button>
           </div>
@@ -149,25 +151,27 @@ const Login = () => {
                 <div className="w-full border-t border-gray-200" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500">Demo Accounts</span>
+                <span className="px-4 bg-white text-gray-500">
+                  {t('auth.login.demoAccounts', 'Demo Accounts')}
+                </span>
               </div>
             </div>
             <div className="mt-4 text-xs text-gray-600 space-y-1 text-center">
-              <p>Admin: admin@seds.com / admin123</p>
-              <p>Donor: donor@seds.com / donor123</p>
-              <p>Receiver: receiver@seds.com / receiver123</p>
+              <p>{t('auth.login.demoAdmin', 'Admin')}: admin@seds.com / admin123</p>
+              <p>{t('auth.login.demoDonor', 'Donor')}: donor@seds.com / donor123</p>
+              <p>{t('auth.login.demoReceiver', 'Receiver')}: receiver@seds.com / receiver123</p>
             </div>
           </div>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            {t('auth.login.noAccount', "Don't have an account?")}{' '}
             <Link
               to="/register"
               className="font-semibold text-primary hover:text-primary-dark"
             >
-              Sign up
+              {t('auth.login.signUp', 'Sign up')}
             </Link>
           </p>
         </div>

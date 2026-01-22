@@ -38,34 +38,34 @@ export default {
       },
       colors: {
         primary: {
-          DEFAULT: '#1a365d', // Deep Navy Blue (real estate style)
-          dark: '#0f172a',
-          light: '#2d4a6b',
-          lighter: '#4a6fa5',
+          DEFAULT: '#2563eb', // Brighter blue for a lighter UI
+          dark: '#1e40af',
+          light: '#3b82f6',
+          lighter: '#60a5fa',
         },
         secondary: {
-          DEFAULT: '#c9a961', // Warm Gold/Amber accent
-          dark: '#a68b4f',
-          light: '#d4b87a',
+          DEFAULT: '#f59e0b', // Warmer, brighter amber
+          dark: '#d97706',
+          light: '#fbbf24',
         },
         accent: {
-          DEFAULT: '#5b7c99', // Soft Blue-Gray
-          light: '#7a9bb8',
+          DEFAULT: '#0ea5e9', // Fresh sky-blue accent
+          light: '#38bdf8',
         },
         neutral: {
-          DEFAULT: '#f5f3f0', // Warm off-white
-          light: '#faf9f7',
-          dark: '#e8e6e1',
+          DEFAULT: '#f8fafc', // Light neutral
+          light: '#ffffff',
+          dark: '#e2e8f0',
         },
         background: {
-          DEFAULT: '#faf9f7', // Cream/off-white background
+          DEFAULT: '#f8fafc', // Lighter, cooler background
           light: '#ffffff',
-          warm: '#f5f3f0',
+          warm: '#f1f5f9',
         },
         text: {
-          DEFAULT: '#2d3748', // Charcoal gray
-          dark: '#1a202c',
-          light: '#718096',
+          DEFAULT: '#334155', // Softer slate
+          dark: '#1e293b',
+          light: '#64748b',
         }
       },
     },

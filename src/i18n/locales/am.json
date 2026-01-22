@@ -442,12 +442,17 @@
       "title": "እንኳን ደህና መጡ",
       "subtitle": "ወደ SEDS ለመቀጠል ይግቡ",
       "email": "የኢሜይል አድራሻ",
+      "emailPlaceholder": "you@example.com",
       "password": "የይለፍ ቃል",
+      "passwordPlaceholder": "••••••••",
       "rememberMe": "አስታውሰኝ",
       "forgotPassword": "የይለፍ ቃል ረሳኽዎት?",
       "signIn": "ግባ",
       "signingIn": "በመግባት ላይ...",
       "demoAccounts": "የማሳያ መለያዎች",
+      "demoAdmin": "አስተዳዳሪ",
+      "demoDonor": "ለጋሽ",
+      "demoReceiver": "ተቀባይ",
       "noAccount": "መለያ የሎትም?",
       "signUp": "ይመዝግቡ"
     },
@@ -455,15 +460,26 @@
       "title": "መለያ ይፍጠሩ",
       "subtitle": "ወደ SEDS ይቀላቀሉ እና ለውጥ ማምጣት ይጀምሩ",
       "fullName": "ሙሉ ስም",
+      "namePlaceholder": "ለምሳሌ፣ አብርሃም ተስፋዬ",
       "email": "የኢሜይል አድራሻ",
+      "emailPlaceholder": "you@example.com",
       "iWantTo": "እፈልጋለሁ",
       "donateHelp": "ለግሱ / ሌሎችን ይርዱ",
       "requestHelp": "እርዳታ ይጠይቁ",
+      "password": "የይለፍ ቃል",
+      "passwordPlaceholder": "••••••••",
       "confirmPassword": "የይለፍ ቃል ያረጋግጡ",
+      "confirmPasswordPlaceholder": "••••••••",
       "createAccount": "መለያ ይፍጠሩ",
       "creatingAccount": "መለያ በመፍጠር ላይ...",
       "hasAccount": "ቀድሞውኑ መለያ አሎት?",
       "signIn": "ግባ"
+    },
+    "errors": {
+      "loginFailed": "መግባት አልተሳካም። እባክዎ መለያዎትን ያረጋግጡ።",
+      "registerFailed": "መመዝገብ አልተሳካም። እንደገና ይሞክሩ።",
+      "passwordsNoMatch": "የይለፍ ቃላት አይዛመዱም",
+      "passwordMin": "የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት"
     }
   }
 }
