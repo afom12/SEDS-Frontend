@@ -16,8 +16,8 @@ const Footer = () => {
                 <FaHandHoldingHeart className="text-white text-sm" />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-bold text-text-dark">SEDS</span>
-                <span className="text-xs text-gray-500">Share & Donor Platform</span>
+                <span className="text-lg font-bold text-text-dark">AidLink</span>
+                <span className="text-xs text-gray-500">AidLink Platform</span>
               </div>
             </div>
             <p className="text-gray-600 text-sm">

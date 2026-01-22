@@ -77,14 +77,14 @@ const Register = () => {
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary-dark rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-2xl">S</span>
+                <span className="text-white font-bold text-2xl">A</span>
               </div>
             </div>
             <h2 className="text-3xl font-bold text-text-dark mb-2">
               {t('auth.register.title', 'Create Account')}
             </h2>
             <p className="text-gray-600 text-sm">
-              {t('auth.register.subtitle', 'Join SEDS and start making a difference')}
+              {t('auth.register.subtitle', 'Join AidLink and start making a difference')}
             </p>
           </div>
 

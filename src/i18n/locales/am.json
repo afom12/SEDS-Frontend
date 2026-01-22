@@ -83,7 +83,7 @@
     }
   },
   "benefits": {
-    "title": "ለምን SEDS ይመርጣሉ?",
+    "title": "ለምን AidLink ይመርጣሉ?",
     "subtitle": "በመተማመን ለመስጠት እና ለመቀበል የሚያስፈልግዎ ሁሉ",
     "secure": {
       "title": "100% ደህንነት",
@@ -114,7 +114,7 @@
     "howItWorks": "እንዴት ይሠራል",
     "trustTransparency": "እምነት እና ግልጽነት",
     "contactUs": "ያግኙን",
-    "copyright": "© {{year}} SEDS። ሁሉም መብቶች የተጠበቁ ናቸው።",
+    "copyright": "© {{year}} AidLink። ሁሉም መብቶች የተጠበቁ ናቸው።",
     "madeWith": "በ",
     "forTransparency": "ለግልጽነት የተሠራ"
   },
@@ -440,7 +440,7 @@
   "auth": {
     "login": {
       "title": "እንኳን ደህና መጡ",
-      "subtitle": "ወደ SEDS ለመቀጠል ይግቡ",
+      "subtitle": "ወደ AidLink ለመቀጠል ይግቡ",
       "email": "የኢሜይል አድራሻ",
       "emailPlaceholder": "you@example.com",
       "password": "የይለፍ ቃል",
@@ -458,7 +458,7 @@
     },
     "register": {
       "title": "መለያ ይፍጠሩ",
-      "subtitle": "ወደ SEDS ይቀላቀሉ እና ለውጥ ማምጣት ይጀምሩ",
+      "subtitle": "ወደ AidLink ይቀላቀሉ እና ለውጥ ማምጣት ይጀምሩ",
       "fullName": "ሙሉ ስም",
       "namePlaceholder": "ለምሳሌ፣ አብርሃም ተስፋዬ",
       "email": "የኢሜይል አድራሻ",

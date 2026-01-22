@@ -1,6 +1,6 @@
-# 🌟 SEDS - Transparent Aid Coordination Platform (Frontend)
+# 🌟 AidLink - Transparent Aid Coordination Platform (Frontend)
 
-> **SEDS** (Share & Donor System) is a transparent aid coordination platform UI that connects aid seekers with aid providers. This repository contains the frontend application built with modern web technologies.
+> **AidLink** is a transparent aid coordination platform UI that connects aid seekers with aid providers. This repository contains the frontend application built with modern web technologies.
 
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite)](https://vitejs.dev/)
@@ -27,7 +27,7 @@
 
 ## 🎯 Overview
 
-SEDS is a comprehensive aid coordination platform UI designed to facilitate transparent and efficient distribution of humanitarian aid. The frontend supports multiple aid types including food, clothing, medical assistance, cash support, school supplies, and housing assistance.
+AidLink is a comprehensive aid coordination platform UI designed to facilitate transparent and efficient distribution of humanitarian aid. The frontend supports multiple aid types including food, clothing, medical assistance, cash support, school supplies, and housing assistance.
 
 ### Key Principles
 

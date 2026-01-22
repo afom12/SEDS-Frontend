@@ -40,8 +40,8 @@ const Navbar = () => {
               <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full border-2 border-white"></div>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-text-dark">SEDS</span>
-              <span className="text-xs text-gray-500 hidden lg:block">Share & Donor Platform</span>
+              <span className="text-xl font-bold text-text-dark">AidLink</span>
+              <span className="text-xs text-gray-500 hidden lg:block">AidLink Platform</span>
             </div>
           </Link>
 

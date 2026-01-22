@@ -19,7 +19,7 @@
     }
   },
   "benefits": {
-    "title": "Why Choose SEDS?",
+    "title": "Why Choose AidLink?",
     "subtitle": "Everything you need to give and receive with confidence",
     "secure": {
       "title": "100% Secure",
@@ -114,7 +114,7 @@
     "howItWorks": "How It Works",
     "trustTransparency": "Trust & Transparency",
     "contactUs": "Contact Us",
-    "copyright": "© {{year}} SEDS. All rights reserved.",
+    "copyright": "© {{year}} AidLink. All rights reserved.",
     "madeWith": "Made with",
     "forTransparency": "for transparency"
   },
@@ -440,7 +440,7 @@
   "auth": {
     "login": {
       "title": "Welcome Back",
-      "subtitle": "Sign in to continue to SEDS",
+      "subtitle": "Sign in to continue to AidLink",
       "email": "Email address",
       "emailPlaceholder": "you@example.com",
       "password": "Password",
@@ -458,7 +458,7 @@
     },
     "register": {
       "title": "Create Account",
-      "subtitle": "Join SEDS and start making a difference",
+      "subtitle": "Join AidLink and start making a difference",
       "fullName": "Full Name",
       "namePlaceholder": "John Doe",
       "email": "Email address",

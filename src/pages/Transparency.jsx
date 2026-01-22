@@ -269,7 +269,7 @@ const Transparency = () => {
             {t('transparency.disclaimer', 'Important Notice')}
           </h3>
           <p className="text-blue-800 dark:text-blue-300 text-sm">
-            {t('transparency.disclaimerText', 'SEDS is committed to transparency and accountability. All donations are processed securely, and all requests are verified before publication. We maintain a public ledger of all transactions to ensure complete transparency. If you have any concerns, please contact us.')}
+            {t('transparency.disclaimerText', 'AidLink is committed to transparency and accountability. All donations are processed securely, and all requests are verified before publication. We maintain a public ledger of all transactions to ensure complete transparency. If you have any concerns, please contact us.')}
           </p>
         </Card>
       </div>
