@@ -21,6 +21,9 @@ const KeyboardShortcutsHandler = () => {
 const Landing = React.lazy(() => import('./pages/Landing'));
 const Login = React.lazy(() => import('./pages/auth/Login'));
 const Register = React.lazy(() => import('./pages/auth/Register'));
+const RegisterWithVerification = React.lazy(() => import('./pages/auth/RegisterWithVerification'));
+const VerificationPending = React.lazy(() => import('./pages/verify/VerificationPending'));
+const Transparency = React.lazy(() => import('./pages/Transparency'));
 
 // Donor Pages
 const DonorDashboard = React.lazy(() => import('./pages/donor/DonorDashboard'));
@@ -40,6 +43,18 @@ const ReviewRequests = React.lazy(() => import('./pages/admin/ReviewRequests'));
 const UserManagement = React.lazy(() => import('./pages/admin/UserManagement'));
 const Analytics = React.lazy(() => import('./pages/admin/Analytics'));
 const ActivityLogs = React.lazy(() => import('./pages/admin/ActivityLogs'));
+const VerifyUsers = React.lazy(() => import('./pages/admin/VerifyUsers'));
+const VerifyRequests = React.lazy(() => import('./pages/admin/VerifyRequests'));
+
+// Aid Provider Pages
+const AidProviderDashboard = React.lazy(() => import('./pages/aid-provider/AidProviderDashboard'));
+const CreateAidOffer = React.lazy(() => import('./pages/aid-provider/CreateAidOffer'));
+const BrowseAidRequests = React.lazy(() => import('./pages/aid-provider/BrowseRequests'));
+const DeliveryTracking = React.lazy(() => import('./pages/aid-provider/DeliveryTracking'));
+
+// Aid Seeker Pages
+const AidSeekerDashboard = React.lazy(() => import('./pages/aid-seeker/AidSeekerDashboard'));
+const CreateAidRequest = React.lazy(() => import('./pages/aid-seeker/CreateAidRequest'));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -119,7 +134,47 @@ function AppContent() {
             element={
               <Suspense fallback={<PageLoader />}>
                 <Navbar />
+                <RegisterWithVerification />
+                <Footer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/register-old"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Navbar />
                 <Register />
+                <Footer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/verify-account"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Navbar />
+                <VerificationPending />
+                <Footer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/transparency"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Navbar />
+                <Transparency />
+                <Footer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/transparency/requests/:id"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Navbar />
+                <Transparency />
                 <Footer />
               </Suspense>
             }
@@ -311,12 +366,136 @@ function AppContent() {
             }
           />
           <Route
+            path="/admin/verify-users"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <VerifyUsers />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/verify-requests"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <VerifyRequests />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/admin/*"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <DashboardLayout>
                   <Suspense fallback={<PageLoader />}>
                     <AdminDashboard />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Aid Seeker Routes */}
+          <Route
+            path="/aid-seeker/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['aid_seeker', 'receiver']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <AidSeekerDashboard />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aid-seeker/request"
+            element={
+              <ProtectedRoute allowedRoles={['aid_seeker', 'receiver']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <CreateAidRequest />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aid-seeker/*"
+            element={
+              <ProtectedRoute allowedRoles={['aid_seeker', 'receiver']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <AidSeekerDashboard />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Aid Provider Routes */}
+          <Route
+            path="/aid-provider/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['aid_provider', 'donor']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <AidProviderDashboard />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aid-provider/offer"
+            element={
+              <ProtectedRoute allowedRoles={['aid_provider', 'donor']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <CreateAidOffer />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aid-provider/requests"
+            element={
+              <ProtectedRoute allowedRoles={['aid_provider', 'donor']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <BrowseAidRequests />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aid-provider/deliveries"
+            element={
+              <ProtectedRoute allowedRoles={['aid_provider', 'donor']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <DeliveryTracking />
+                  </Suspense>
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aid-provider/*"
+            element={
+              <ProtectedRoute allowedRoles={['aid_provider', 'donor']}>
+                <DashboardLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <AidProviderDashboard />
                   </Suspense>
                 </DashboardLayout>
               </ProtectedRoute>

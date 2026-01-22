@@ -1,0 +1,379 @@
+// AID COORDINATION SYSTEM EXTENSION
+// This extends the existing schema to support needs-based aid coordination
+// Add these models to your existing schema.prisma file
+
+// ============================================
+// AID TYPE SYSTEM
+// ============================================
+
+// Aid Type model - Defines what types of aid can be requested/offered
+model AidType {
+  id          String   @id @default(uuid())
+  code        String   @unique // e.g., "FOOD_URGENT", "CLOTHING", "MEDICAL"
+  name        String   // Display name
+  nameAmharic String?  // Amharic name
+  description String?  @db.Text
+  
+  // Category classification
+  category    AidCategory
+  
+  // Characteristics
+  isPerishable Boolean @default(false) // For food items
+  requiresExpiration Boolean @default(false) // Must have expiry date
+  allowsScheduling Boolean @default(true) // Can schedule future delivery
+  requiresQuantity Boolean @default(true) // Needs quantity specification
+  
+  // Default urgency
+  defaultUrgency UrgencyLevel @default(MEDIUM)
+  
+  // Relationships
+  requests    AidRequest[]
+  offers      AidOffer[]
+  
+  // Metadata
+  isActive    Boolean  @default(true)
+  displayOrder Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("aid_types")
+}
+
+enum AidCategory {
+  FOOD
+  CLOTHING
+  MEDICAL
+  CASH
+  EDUCATION
+  SHELTER
+  SERVICES
+  OTHER
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// ============================================
+// ORGANIZATION MODEL
+// ============================================
+
+// Organization model - Trusted organizations that can verify requests
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  nameAmharic String?
+  description String?  @db.Text
+  
+  // Organization details
+  type        OrganizationType
+  registrationNumber String? // Official registration
+  address     String?
+  phone       String?
+  email       String?
+  website     String?
+  
+  // Verification
+  verified    Boolean  @default(false)
+  verifiedAt  DateTime?
+  verifiedBy  String? // Admin user ID
+  
+  // Contact person
+  contactPersonName String?
+  contactPersonPhone String?
+  contactPersonEmail String?
+  
+  // Relationships
+  members     OrganizationMember[]
+  verifiedRequests AidRequest[] // Requests verified by this org
+  managedDeliveries Delivery[] // Deliveries managed by this org
+  
+  // Documents
+  documents   Document[]
+  
+  // Metadata
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([verified])
+  @@index([type])
+  @@map("organizations")
+}
+
+// Organization members (users who belong to organizations)
+model OrganizationMember {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  role           OrganizationRole @default(MEMBER)
+  isActive       Boolean  @default(true)
+  
+  joinedAt       DateTime @default(now())
+  createdAt      DateTime @default(now())
+  
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+  @@map("organization_members")
+}
+
+enum OrganizationRole {
+  ADMIN
+  VERIFIER
+  COORDINATOR
+  MEMBER
+}
+
+// ============================================
+// AID REQUEST MODEL (Extended Request)
+// ============================================
+
+// Extended Request model - Now supports aid types and real-world scenarios
+// NOTE: This extends the existing Request model
+// Add these fields to your existing Request model:
+
+/*
+  // AID COORDINATION FIELDS (add to existing Request model)
+  
+  // Aid type and details
+  aidTypeId   String?
+  aidType     AidType?  @relation(fields: [aidTypeId], references: [id])
+  
+  // What they need (not just money)
+  aidTypeCode String?   // e.g., "FOOD_URGENT", "CLOTHING"
+  quantity    Int?      // How many items/units needed
+  unit        String?   // e.g., "kg", "pieces", "people"
+  description String?   @db.Text // What specifically they need
+  
+  // Urgency and timing
+  urgency     UrgencyLevel @default(MEDIUM)
+  neededBy    DateTime?    // When aid is needed
+  expiresAt   DateTime?    // For perishable food - when it expires
+  isPerishable Boolean     @default(false)
+  
+  // Location and delivery
+  location    String?      // Where aid is needed
+  deliveryMethod DeliveryMethod @default(PICKUP)
+  preferredDeliveryTime DateTime? // Preferred delivery time
+  
+  // Organization verification
+  verifiedByOrganizationId String?
+  verifiedByOrganization Organization? @relation(fields: [verifiedByOrganizationId], references: [id])
+  
+  // Matching
+  matchedOffers AidOffer[] // Offers that match this request
+  deliveries    Delivery[] // Actual deliveries
+  
+  // Status tracking
+  matchedAt   DateTime?   // When first offer was matched
+  inProgressAt DateTime?  // When aid delivery started
+  expiredAt   DateTime?   // When request expired (for perishable)
+  
+  // Update status enum to include:
+  // MATCHED, IN_PROGRESS, EXPIRED
+*/
+
+enum DeliveryMethod {
+  PICKUP              // Seeker picks up
+  DELIVERY            // Provider delivers
+  ORGANIZATION_MANAGED // Organization coordinates
+  MEETUP              // Meet at location
+}
+
+// ============================================
+// AID OFFER MODEL
+// ============================================
+
+// Aid Offer model - What donors/providers are offering
+model AidOffer {
+  id          String   @id @default(uuid())
+  
+  // Provider information
+  providerId  String
+  provider    User     @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  // What they're offering
+  aidTypeId  String
+  aidType    AidType  @relation(fields: [aidTypeId], references: [id])
+  aidTypeCode String  // e.g., "FOOD_URGENT"
+  
+  // Offer details
+  title       String
+  description String   @db.Text
+  
+  // Quantity and availability
+  quantity    Int?     // How much they can give
+  unit        String?  // e.g., "kg", "pieces"
+  availableQuantity Int? // How much is still available
+  
+  // For money offers
+  amount      Decimal? @db.Decimal(10, 2) // If offering cash
+  
+  // Timing
+  availableFrom DateTime? // When available
+  availableUntil DateTime? // Until when available
+  expiresAt   DateTime? // For perishable items
+  
+  // Location
+  location    String?  // Where aid is located
+  canDeliver Boolean  @default(false)
+  deliveryRadius Int? // km radius for delivery
+  
+  // Status
+  status      AidOfferStatus @default(AVAILABLE)
+  
+  // Matching
+  requestId   String? // If matched to specific request
+  request     Request? @relation(fields: [requestId], references: [id], onDelete: SetNull)
+  
+  deliveries  Delivery[] // Actual deliveries made
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  matchedAt   DateTime?
+  acceptedAt  DateTime?
+  completedAt DateTime?
+  
+  @@index([providerId])
+  @@index([aidTypeId])
+  @@index([status])
+  @@index([requestId])
+  @@index([createdAt])
+  @@map("aid_offers")
+}
+
+enum AidOfferStatus {
+  AVAILABLE      // Available for matching
+  MATCHED        // Matched to a request
+  ACCEPTED       // Accepted by seeker
+  IN_TRANSIT     // Being delivered
+  DELIVERED      // Delivered
+  CONFIRMED      // Confirmed by seeker
+  CANCELLED      // Cancelled
+  EXPIRED        // Expired (for perishable)
+}
+
+// ============================================
+// DELIVERY MODEL
+// ============================================
+
+// Delivery model - Tracks actual aid handover
+model Delivery {
+  id          String   @id @default(uuid())
+  
+  // Related entities
+  requestId   String
+  request     Request  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  offerId     String
+  offer       AidOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  
+  // Parties
+  providerId  String
+  provider    User     @relation("DeliveryProvider", fields: [providerId], references: [id])
+  
+  seekerId    String
+  seeker      User     @relation("DeliverySeeker", fields: [seekerId], references: [id])
+  
+  // Organization coordination (optional)
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  
+  // Delivery details
+  quantity    Int      // Actual quantity delivered
+  unit        String?
+  
+  // For money
+  amount      Decimal? @db.Decimal(10, 2)
+  
+  // Delivery method
+  deliveryMethod DeliveryMethod
+  
+  // Location
+  deliveryLocation String?
+  deliveryAddress  String?
+  
+  // Status
+  status      DeliveryStatus @default(SCHEDULED)
+  
+  // Scheduling
+  scheduledAt DateTime? // When delivery is scheduled
+  deliveredAt DateTime? // When actually delivered
+  confirmedAt DateTime? // When seeker confirmed receipt
+  
+  // Tracking
+  trackingNotes String? @db.Text
+  deliveryNotes String? @db.Text
+  
+  // Proof
+  proofPhotos String[] // Photos of delivery
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([requestId])
+  @@index([offerId])
+  @@index([providerId])
+  @@index([seekerId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("deliveries")
+}
+
+enum DeliveryStatus {
+  SCHEDULED     // Delivery scheduled
+  IN_TRANSIT    // On the way
+  DELIVERED     // Delivered to seeker
+  CONFIRMED     // Confirmed by seeker
+  FAILED        // Delivery failed
+  CANCELLED     // Cancelled
+}
+
+// ============================================
+// UPDATE USER MODEL
+// ============================================
+
+// Add to existing User model relationships:
+/*
+  // AID COORDINATION RELATIONSHIPS (add to User model)
+  aidOffers   AidOffer[]
+  deliveriesAsProvider Delivery[] @relation("DeliveryProvider")
+  deliveriesAsSeeker   Delivery[] @relation("DeliverySeeker")
+  organizationMemberships OrganizationMember[]
+*/
+
+// Update UserRole enum to include:
+/*
+enum UserRole {
+  ADMIN
+  AID_SEEKER    // Needy/poor people seeking aid
+  AID_PROVIDER  // Donors/helpers providing aid
+  DONOR         // Legacy - for money donations
+  RECEIVER      // Legacy - for money requests
+}
+*/
+
+// Update RequestStatus enum to include:
+/*
+enum RequestStatus {
+  DRAFT
+  SUBMITTED
+  VERIFIED
+  MATCHED       // Aid offer matched
+  IN_PROGRESS   // Delivery in progress
+  COMPLETED
+  EXPIRED       // Expired (especially for perishable food)
+  REJECTED
+  CANCELLED
+}
+*/
+

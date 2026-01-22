@@ -19,16 +19,37 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (allowedRoles.length > 0 && !allowedRoles.includes(user.role.toLowerCase())) {
-    // Redirect to user's own dashboard
-    const role = user.role.toLowerCase();
-    return <Navigate to={`/${role}/dashboard`} replace />;
+  if (allowedRoles.length > 0) {
+    const userRole = user.role.toLowerCase();
+    // Map role variations
+    const roleMap = {
+      'aid_seeker': ['aid_seeker', 'receiver'],
+      'aid_provider': ['aid_provider', 'donor'],
+      'receiver': ['aid_seeker', 'receiver'],
+      'donor': ['aid_provider', 'donor'],
+    };
+    
+    const allowedRolesExpanded = allowedRoles.flatMap(role => roleMap[role] || [role]);
+    
+    if (!allowedRolesExpanded.includes(userRole)) {
+      // Redirect to user's own dashboard
+      const dashboardMap = {
+        'aid_seeker': '/aid-seeker/dashboard',
+        'aid_provider': '/aid-provider/dashboard',
+        'receiver': '/receiver/dashboard',
+        'donor': '/donor/dashboard',
+        'admin': '/admin/dashboard',
+      };
+      return <Navigate to={dashboardMap[userRole] || '/dashboard'} replace />;
+    }
   }
 
   return children;
 };
 
 export default ProtectedRoute;
+
+
 
 
 

@@ -25,17 +25,24 @@ const DonorDashboard = () => {
       ]);
 
       if (donationsResult.success) {
-        const donations = donationsResult.data;
-        const total = donations
-          .filter(d => d.status === 'completed')
-          .reduce((sum, d) => sum + d.amount, 0);
+        const donations = donationsResult.data || [];
+        // Filter by REAL payment status from database (COMPLETED, not 'completed')
+        const completedDonations = donations.filter(d => 
+          d.paymentStatus === 'COMPLETED' || d.paymentStatus === 'completed'
+        );
+        const total = completedDonations.reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
         setTotalDonated(total);
-        setCompletedCount(donations.filter(d => d.status === 'completed').length);
+        setCompletedCount(completedDonations.length);
+        // Total donations includes all statuses for accurate count
         setTotalDonations(donations.length);
       }
 
       if (requestsResult.success) {
-        setActiveRequests(requestsResult.data.filter(r => r.status === 'approved').slice(0, 3));
+        // Filter by REAL status from database (VERIFIED, not 'approved')
+        const verifiedRequests = requestsResult.data.filter(r => 
+          r.status === 'VERIFIED' || r.status === 'verified' || r.status === 'FUNDED'
+        );
+        setActiveRequests(verifiedRequests.slice(0, 3));
       }
       setLoading(false);
     };

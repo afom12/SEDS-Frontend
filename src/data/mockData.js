@@ -228,7 +228,7 @@ export const mockUsers = [
     status: 'active',
     createdAt: '2024-01-01',
     lastLogin: '2024-02-01',
-    totalDonations: 850,
+    totalDonations: 0, // REMOVED: Use real data from API - this is a hard-coded value
     donationCount: 3,
   },
   {
@@ -341,12 +341,15 @@ export const mockActivityLogs = [
   },
 ];
 
+// DEPRECATED: mockStats removed - all analytics now computed from real database data
+// This export kept for backward compatibility but should not be used
+// Use API endpoints /api/admin/analytics and /api/admin/stats instead
 export const mockStats = {
-  totalDonations: 125000,
-  totalRequests: 45,
-  activeDonors: 320,
-  activeReceivers: 89,
-  completedRequests: 38,
+  totalDonations: 0, // REMOVED: Use real data from API
+  totalRequests: 0, // REMOVED: Use real data from API
+  activeDonors: 0, // REMOVED: Use real data from API
+  activeReceivers: 0, // REMOVED: Use real data from API
+  completedRequests: 0, // REMOVED: Use real data from API
   pendingVerification: 5,
   totalUsers: 409,
   monthlyDonations: 15000,

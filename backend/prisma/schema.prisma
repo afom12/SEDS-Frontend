@@ -1,0 +1,660 @@
+// Prisma Schema for SEDS Donation Platform
+// Production-grade database schema with proper relationships and constraints
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model with role-based access
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password      String
+  name          String
+  role          UserRole @default(DONOR)
+  verified      Boolean  @default(false)
+  verifiedAt    DateTime?
+  
+  // Profile information
+  phone         String?
+  address       String?
+  organization  String?
+  organizationType OrganizationType?
+  
+  // Verification documents
+  documents     Document[]
+  
+  // Relationships
+  donations     Donation[]
+  requests      Request[]
+  adminLogs     AdminLog[]
+  
+  // Aid coordination relationships
+  aidOffers     AidOffer[]
+  deliveriesAsProvider Delivery[] @relation("DeliveryProvider")
+  deliveriesAsSeeker   Delivery[] @relation("DeliverySeeker")
+  organizationMemberships OrganizationMember[]
+  
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastLoginAt   DateTime?
+  
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  AID_SEEKER    // Needy/poor people seeking aid
+  AID_PROVIDER  // Donors/helpers providing aid
+  DONOR         // Legacy - for money donations
+  RECEIVER      // Legacy - for money requests
+}
+
+enum OrganizationType {
+  INDIVIDUAL
+  CHURCH
+  NGO
+  COMMUNITY_GROUP
+  SCHOOL
+  HOSPITAL
+  OTHER
+}
+
+// Donation Request model
+model Request {
+  id            String        @id @default(uuid())
+  title         String
+  description   String         @db.Text
+  category      RequestCategory
+  amount        Decimal        @db.Decimal(10, 2)
+  currentAmount Decimal        @default(0) @db.Decimal(10, 2)
+  progress      Float          @default(0)
+  status        RequestStatus  @default(DRAFT)
+  
+  // Receiver information
+  receiverId    String
+  receiver      User           @relation(fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  // Verification
+  verified      Boolean        @default(false)
+  verifiedAt    DateTime?
+  verifiedBy    String?
+  adminNotes    String?        @db.Text
+  
+  // Organization info (if applicable)
+  organizationName String?
+  organizationType OrganizationType?
+  
+  // Documents and proof
+  documents     Document[]
+  impactReports ImpactReport[]
+  
+  // Donations
+  donations     Donation[]
+  
+  // AID COORDINATION FIELDS
+  // Aid type and details
+  aidTypeId     String?
+  aidType       AidType?  @relation(fields: [aidTypeId], references: [id])
+  aidTypeCode   String?   // e.g., "FOOD_URGENT", "CLOTHING"
+  
+  // What they need (not just money)
+  quantity      Int?      // How many items/units needed
+  unit          String?   // e.g., "kg", "pieces", "people"
+  
+  // Urgency and timing
+  urgency       UrgencyLevel @default(MEDIUM)
+  neededBy      DateTime?    // When aid is needed
+  expiresAt     DateTime?    // For perishable food - when it expires
+  isPerishable  Boolean     @default(false)
+  
+  // Location and delivery
+  location      String?      // Where aid is needed
+  deliveryMethod DeliveryMethod @default(PICKUP)
+  preferredDeliveryTime DateTime? // Preferred delivery time
+  
+  // Organization verification
+  verifiedByOrganizationId String?
+  verifiedByOrganization Organization? @relation(fields: [verifiedByOrganizationId], references: [id])
+  
+  // Matching
+  matchedOffers AidOffer[] // Offers that match this request
+  deliveries    Delivery[] // Actual deliveries
+  
+  // Status tracking
+  matchedAt     DateTime?   // When first offer was matched
+  inProgressAt  DateTime?   // When aid delivery started
+  expiredAt     DateTime?   // When request expired (for perishable)
+  
+  // Timestamps
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  submittedAt   DateTime?
+  fundedAt      DateTime?
+  completedAt   DateTime?
+  
+  @@index([receiverId])
+  @@index([status])
+  @@index([verified])
+  @@index([createdAt])
+  @@index([aidTypeId])
+  @@index([urgency])
+  @@index([expiresAt])
+  @@index([verifiedByOrganizationId])
+  @@map("requests")
+}
+
+enum RequestCategory {
+  MEDICAL
+  EDUCATION
+  FOOD
+  SHELTER
+  EMERGENCY
+  COMMUNITY
+  OTHER
+}
+
+enum RequestStatus {
+  DRAFT
+  SUBMITTED
+  VERIFIED
+  MATCHED       // Aid offer matched to request
+  IN_PROGRESS   // Delivery in progress
+  FUNDED        // Legacy - for money requests
+  COMPLETED
+  EXPIRED       // Expired (especially for perishable food)
+  REJECTED
+  CANCELLED
+}
+
+// Donation model with transaction tracking
+model Donation {
+  id              String        @id @default(uuid())
+  requestId       String
+  request         Request       @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  donorId         String
+  donor           User          @relation(fields: [donorId], references: [id], onDelete: Cascade)
+  
+  amount          Decimal       @db.Decimal(10, 2)
+  anonymous       Boolean       @default(false)
+  message         String?       @db.Text
+  
+  // Payment information
+  transactionId  String?       @unique
+  paymentMethod  PaymentMethod
+  paymentStatus  PaymentStatus @default(PENDING)
+  
+  // Transaction metadata
+  transaction     Transaction?
+  
+  // Receipt
+  receiptNumber   String?       @unique
+  receiptSentAt   DateTime?
+  
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@index([requestId])
+  @@index([donorId])
+  @@index([transactionId])
+  @@index([paymentStatus])
+  @@index([createdAt])
+  @@map("donations")
+}
+
+enum PaymentMethod {
+  STRIPE
+  CHAPA
+  BANK_TRANSFER
+  MOBILE_MONEY
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+// Transaction model for payment gateway integration
+model Transaction {
+  id              String        @id @default(uuid())
+  donationId      String        @unique
+  donation        Donation      @relation(fields: [donationId], references: [id], onDelete: Cascade)
+  
+  // Gateway information
+  gateway         PaymentMethod
+  gatewayTxId     String?       @unique
+  gatewayResponse Json?
+  
+  // Amount and currency
+  amount          Decimal       @db.Decimal(10, 2)
+  currency        String        @default("ETB")
+  
+  // Status tracking
+  status          PaymentStatus @default(PENDING)
+  failureReason   String?       @db.Text
+  
+  // Refund information
+  refunded        Boolean       @default(false)
+  refundAmount    Decimal?      @db.Decimal(10, 2)
+  refundedAt      DateTime?
+  refundReason    String?       @db.Text
+  
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  completedAt     DateTime?
+  
+  @@index([gatewayTxId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("transactions")
+}
+
+// Document model for verification and proof
+model Document {
+  id          String   @id @default(uuid())
+  
+  // Relationships
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  requestId   String?
+  request     Request?  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // Document metadata
+  type        DocumentType
+  fileName    String
+  filePath    String
+  fileSize    Int
+  mimeType    String
+  
+  // Verification
+  verified    Boolean  @default(false)
+  verifiedAt  DateTime?
+  verifiedBy  String?
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([requestId])
+  @@index([type])
+  @@map("documents")
+}
+
+enum DocumentType {
+  ID_CARD
+  PASSPORT
+  MEDICAL_REPORT
+  PROOF_OF_NEED
+  ORGANIZATION_CERTIFICATE
+  BANK_STATEMENT
+  RECEIPT
+  IMPACT_PHOTO
+  OTHER
+}
+
+// Impact Report model for transparency
+model ImpactReport {
+  id          String   @id @default(uuid())
+  requestId   String
+  request     Request  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String   @db.Text
+  
+  // Media
+  photos      String[] // Array of file paths
+  
+  // Impact metrics
+  beneficiariesCount Int?
+  impactDescription String? @db.Text
+  
+  // Verification
+  verified    Boolean  @default(false)
+  verifiedAt  DateTime?
+  verifiedBy  String?
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([requestId])
+  @@index([verified])
+  @@map("impact_reports")
+}
+
+// Admin Log model for audit trail (immutable)
+model AdminLog {
+  id          String   @id @default(uuid())
+  adminId     String
+  admin       User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  
+  action      String   // e.g., "APPROVE_REQUEST", "REJECT_REQUEST", "VERIFY_USER"
+  entityType  String   // e.g., "REQUEST", "USER", "DONATION"
+  entityId    String
+  
+  // Details
+  details     Json?
+  reason      String?  @db.Text
+  
+  // IP and user agent for security
+  ipAddress   String?
+  userAgent   String?
+  
+  // Timestamp (immutable - no updatedAt)
+  createdAt   DateTime @default(now())
+  
+  @@index([adminId])
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+  @@map("admin_logs")
+}
+
+// System Settings (for configuration)
+model SystemSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String   @db.Text
+  description String?  @db.Text
+  updatedAt   DateTime @updatedAt
+  
+  @@map("system_settings")
+}
+
+// ============================================
+// AID COORDINATION SYSTEM MODELS
+// ============================================
+
+// Aid Type model - Defines what types of aid can be requested/offered
+model AidType {
+  id          String   @id @default(uuid())
+  code        String   @unique // e.g., "FOOD_URGENT", "CLOTHING", "MEDICAL"
+  name        String   // Display name
+  nameAmharic String?  // Amharic name
+  description String?  @db.Text
+  
+  // Category classification
+  category    AidCategory
+  
+  // Characteristics
+  isPerishable Boolean @default(false) // For food items
+  requiresExpiration Boolean @default(false) // Must have expiry date
+  allowsScheduling Boolean @default(true) // Can schedule future delivery
+  requiresQuantity Boolean @default(true) // Needs quantity specification
+  
+  // Default urgency
+  defaultUrgency UrgencyLevel @default(MEDIUM)
+  
+  // Relationships
+  requests    Request[]
+  offers      AidOffer[]
+  
+  // Metadata
+  isActive    Boolean  @default(true)
+  displayOrder Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([category])
+  @@index([isActive])
+  @@map("aid_types")
+}
+
+enum AidCategory {
+  FOOD
+  CLOTHING
+  MEDICAL
+  CASH
+  EDUCATION
+  SHELTER
+  SERVICES
+  OTHER
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum DeliveryMethod {
+  PICKUP              // Seeker picks up
+  DELIVERY            // Provider delivers
+  ORGANIZATION_MANAGED // Organization coordinates
+  MEETUP              // Meet at location
+}
+
+// Organization model - Trusted organizations that can verify requests
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  nameAmharic String?
+  description String?  @db.Text
+  
+  // Organization details
+  type        OrganizationType
+  registrationNumber String? // Official registration
+  address     String?
+  phone       String?
+  email       String?
+  website     String?
+  
+  // Verification
+  verified    Boolean  @default(false)
+  verifiedAt  DateTime?
+  verifiedBy  String? // Admin user ID
+  
+  // Contact person
+  contactPersonName String?
+  contactPersonPhone String?
+  contactPersonEmail String?
+  
+  // Relationships
+  members     OrganizationMember[]
+  verifiedRequests Request[] // Requests verified by this org
+  managedDeliveries Delivery[] // Deliveries managed by this org
+  
+  // Documents
+  documents   Document[]
+  
+  // Metadata
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([verified])
+  @@index([type])
+  @@map("organizations")
+}
+
+// Organization members (users who belong to organizations)
+model OrganizationMember {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  role           OrganizationRole @default(MEMBER)
+  isActive       Boolean  @default(true)
+  
+  joinedAt       DateTime @default(now())
+  createdAt      DateTime @default(now())
+  
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+  @@map("organization_members")
+}
+
+enum OrganizationRole {
+  ADMIN
+  VERIFIER
+  COORDINATOR
+  MEMBER
+}
+
+// Aid Offer model - What donors/providers are offering
+model AidOffer {
+  id          String   @id @default(uuid())
+  
+  // Provider information
+  providerId  String
+  provider    User     @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  // What they're offering
+  aidTypeId  String
+  aidType    AidType  @relation(fields: [aidTypeId], references: [id])
+  aidTypeCode String  // e.g., "FOOD_URGENT", "CLOTHING"
+  
+  // Offer details
+  title       String
+  description String   @db.Text
+  
+  // Quantity and availability
+  quantity    Int?     // How much they can give
+  unit        String?  // e.g., "kg", "pieces"
+  availableQuantity Int? // How much is still available
+  
+  // For money offers
+  amount      Decimal? @db.Decimal(10, 2) // If offering cash
+  
+  // Timing
+  availableFrom DateTime? // When available
+  availableUntil DateTime? // Until when available
+  expiresAt   DateTime? // For perishable items
+  
+  // Location
+  location    String?  // Where aid is located
+  canDeliver Boolean  @default(false)
+  deliveryRadius Int? // km radius for delivery
+  
+  // Status
+  status      AidOfferStatus @default(AVAILABLE)
+  
+  // Matching
+  requestId   String? // If matched to specific request
+  request     Request? @relation(fields: [requestId], references: [id], onDelete: SetNull)
+  
+  deliveries  Delivery[] // Actual deliveries made
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  matchedAt   DateTime?
+  acceptedAt  DateTime?
+  completedAt DateTime?
+  
+  @@index([providerId])
+  @@index([aidTypeId])
+  @@index([status])
+  @@index([requestId])
+  @@index([createdAt])
+  @@index([expiresAt])
+  @@map("aid_offers")
+}
+
+enum AidOfferStatus {
+  AVAILABLE      // Available for matching
+  MATCHED        // Matched to a request
+  ACCEPTED       // Accepted by seeker
+  IN_TRANSIT     // Being delivered
+  DELIVERED      // Delivered
+  CONFIRMED      // Confirmed by seeker
+  CANCELLED      // Cancelled
+  EXPIRED        // Expired (for perishable)
+}
+
+// Delivery model - Tracks actual aid handover
+model Delivery {
+  id          String   @id @default(uuid())
+  
+  // Related entities
+  requestId   String
+  request     Request  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  offerId     String
+  offer       AidOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  
+  // Parties
+  providerId  String
+  provider    User     @relation("DeliveryProvider", fields: [providerId], references: [id])
+  
+  seekerId    String
+  seeker      User     @relation("DeliverySeeker", fields: [seekerId], references: [id])
+  
+  // Organization coordination (optional)
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  
+  // Delivery details
+  quantity    Int      // Actual quantity delivered
+  unit        String?
+  
+  // For money
+  amount      Decimal? @db.Decimal(10, 2)
+  
+  // Delivery method
+  deliveryMethod DeliveryMethod
+  
+  // Location
+  deliveryLocation String?
+  deliveryAddress  String?
+  
+  // Status
+  status      DeliveryStatus @default(SCHEDULED)
+  
+  // Scheduling
+  scheduledAt DateTime? // When delivery is scheduled
+  deliveredAt DateTime? // When actually delivered
+  confirmedAt DateTime? // When seeker confirmed receipt
+  
+  // Tracking
+  trackingNotes String? @db.Text
+  deliveryNotes String? @db.Text
+  
+  // Proof
+  proofPhotos String[] // Photos of delivery
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([requestId])
+  @@index([offerId])
+  @@index([providerId])
+  @@index([seekerId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("deliveries")
+}
+
+enum DeliveryStatus {
+  SCHEDULED     // Delivery scheduled
+  IN_TRANSIT    // On the way
+  DELIVERED     // Delivered to seeker
+  CONFIRMED     // Confirmed by seeker
+  FAILED        // Delivery failed
+  CANCELLED     // Cancelled
+}
+
