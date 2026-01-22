@@ -1,398 +1,430 @@
-# SEDS - Transparent Donation Platform
+# 🌟 SEDS - Transparent Aid Coordination Platform
 
-A **production-grade**, full-stack donation platform built with React, Node.js, Express, and PostgreSQL. Focused on transparency, dignity, and trust.
+> **SEDS** (Share & Donor System) is a production-grade, transparent aid coordination platform that connects aid seekers with aid providers. Built with modern web technologies, it ensures trust, verification, and accountability in humanitarian aid distribution.
 
-> 🎉 **Production Upgrade Complete!** This is no longer a demo - it's a real, deployable platform with backend API, payment integration, and verification systems.
+[![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js)](https://nodejs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169E1?logo=postgresql)](https://www.postgresql.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 🚀 Features
+---
 
-### Core Features
-- **Three User Roles**: Admin, Donor, and Receiver
-- **Anonymous Donations**: Option to donate anonymously
-- **Verified Requests**: All requests go through admin verification
-- **Role-Based Dashboards**: Customized interface for each user type
-- **Protected Routes**: Secure access control based on user roles
-- **Modern UI**: Clean, accessible, and professional design
-- **Responsive Design**: Works seamlessly on desktop and mobile
-- **Bilingual Support**: Full English and Amharic translation support
+## 📋 Table of Contents
 
-### Enhanced Features ✨
-- **Error Boundary**: Graceful error handling with user-friendly error pages
-- **Advanced Form Validation**: Real-time validation with visual feedback
-- **Dark Mode**: Full dark theme support with system preference detection
-- **Keyboard Shortcuts**: Power user shortcuts (Ctrl+K for search, Alt+D for dashboard, etc.)
-- **Advanced Search & Filtering**: Multi-filter search with pagination
-- **Data Visualization**: Charts and graphs for analytics (Bar, Line, Pie charts)
-- **Export Functionality**: Export data to CSV, JSON, or print as PDF
-- **Social Sharing**: Share pages via social media or copy links
-- **Tooltips & Help System**: Contextual help throughout the app
-- **Performance Optimizations**: Code splitting, lazy loading, and optimized rendering
-- **Accessibility**: WCAG compliant with ARIA labels, keyboard navigation, and skip links
-- **Enhanced Empty States**: Actionable empty states with helpful CTAs
-- **Loading States**: Skeleton loaders and smooth loading transitions
-- **Visual Polish**: Smooth animations, micro-interactions, and transitions
+- [Overview](#overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 🛠️ Tech Stack
+---
+
+## 🎯 Overview
+
+SEDS is a comprehensive aid coordination platform designed to facilitate transparent and efficient distribution of humanitarian aid. The platform supports multiple aid types including food, clothing, medical assistance, cash support, school supplies, and housing assistance.
+
+### Key Principles
+
+- **Transparency**: All donations and aid distributions are publicly trackable
+- **Verification**: Identity verification ensures trust and accountability
+- **Dignity**: User-friendly interface designed for low-literacy users
+- **Efficiency**: Smart matching algorithm connects aid seekers with providers
+- **Urgency**: Food-specific urgency system prevents waste and prioritizes critical needs
+
+---
+
+## ✨ Features
+
+### Core Functionality
+
+- **Multi-Type Aid Support**
+  - Food (urgent/perishable, ceremony/event)
+  - Clothing and textiles
+  - Medical assistance
+  - Cash support
+  - School supplies
+  - Housing/shelter support
+  - Custom aid types
+
+- **User Roles**
+  - **Aid Seekers**: Register needs, track requests, receive aid
+  - **Aid Providers**: Offer aid, browse requests, track deliveries
+  - **Organizations**: Manage group requests, verify members
+  - **Administrators**: Verify users, approve requests, monitor platform
+
+- **Verification System**
+  - Document upload (ID cards, medical reports, recommendation letters)
+  - Admin verification workflow
+  - Organization-based verification
+  - Verified badges and trust indicators
+
+- **Smart Matching**
+  - Automatic matching of aid offers to requests
+  - Priority-based algorithm (urgency, location, type)
+  - Food expiration tracking
+  - Real-time availability updates
+
+- **Delivery Tracking**
+  - Delivery status updates
+  - Proof of delivery (photos)
+  - Receiver confirmation
+  - Delivery history
+
+- **Food Urgency System**
+  - Automatic urgency calculation based on expiration dates
+  - "MUST BE GIVEN TODAY" alerts for expiring food
+  - Scheduled updates via cron jobs
+  - Visual urgency indicators
+
+- **Transparency & Audit**
+  - Public transparency page (no login required)
+  - Donation ledger
+  - Admin action logs
+  - Impact reports with photos
+
+- **Analytics Dashboard**
+  - Real-time statistics (derived from actual data)
+  - Donation trends
+  - Request completion rates
+  - Food waste prevention metrics
+
+---
+
+## 🛠 Technology Stack
 
 ### Frontend
-- **React 18** - UI library with Suspense and lazy loading
-- **React Router v6** - Navigation and routing
-- **Tailwind CSS** - Utility-first CSS framework with dark mode
-- **React Icons** - Comprehensive icon library
-- **React i18next** - Internationalization (English & Amharic)
-- **Vite** - Fast build tool and dev server
 
-### Backend (NEW!)
-- **Node.js + Express** - RESTful API server
-- **PostgreSQL** - Production database
-- **Prisma** - Modern ORM
-- **JWT** - Authentication with refresh tokens
-- **Stripe** - Payment processing (test mode)
-- **Chapa** - Ethiopia payment gateway (placeholder)
+- **React 18** - Modern UI library
+- **React Router v6** - Client-side routing
+- **Tailwind CSS** - Utility-first CSS framework
+- **React Icons** - Icon library
+- **Axios** - HTTP client
+- **React i18next** - Internationalization (English/Amharic)
+- **Vite** - Build tool and dev server
 
-## 📦 Quick Start
+### Backend
 
-**See [QUICK_START.md](./QUICK_START.md) for detailed setup instructions.**
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **PostgreSQL** - Relational database
+- **Prisma ORM** - Database toolkit
+- **JWT** - Authentication (access + refresh tokens)
+- **Bcryptjs** - Password hashing
+- **Multer** - File upload handling
+- **Express Rate Limit** - API rate limiting
+- **Helmet** - Security headers
 
-### Quick Setup
+### Development Tools
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   cd backend && npm install && cd ..
-   ```
+- **Git** - Version control
+- **ESLint** - Code linting
+- **PostCSS** - CSS processing
+- **Autoprefixer** - CSS vendor prefixes
 
-2. **Setup database:**
-   ```bash
-   createdb seds_db
-   cd backend
-   cp .env.example .env
-   # Edit .env with your database URL
-   npm run db:migrate
-   npm run db:seed
-   ```
+---
 
-3. **Start backend:**
-   ```bash
-   cd backend
-   npm run dev
-   ```
+## 🏗 Architecture
 
-4. **Start frontend (new terminal):**
-   ```bash
-   echo "VITE_API_URL=http://localhost:3000/api" > .env
-   npm run dev
-   ```
+### System Architecture
 
-5. **Access:**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:3000/api
+```
+┌─────────────────┐         ┌─────────────────┐         ┌─────────────────┐
+│   React Frontend │ ◄─────► │  Express Backend │ ◄─────► │   PostgreSQL DB  │
+│   (Port 5173)    │   REST  │   (Port 3000)    │  Prisma │   (Port 5432)   │
+└─────────────────┘         └─────────────────┘         └─────────────────┘
+         │                            │
+         │                            │
+         ▼                            ▼
+┌─────────────────┐         ┌─────────────────┐
+│  Browser Storage │         │   File Storage   │
+│  (Session/Local) │         │   (Documents)    │
+└─────────────────┘         └─────────────────┘
+```
 
-## 🔐 Demo Accounts
+### Database Schema
 
-For testing purposes, you can use these demo accounts:
+- **Users** - User accounts with roles and verification
+- **Requests** - Aid requests with status tracking
+- **AidOffers** - Available aid offers
+- **AidTypes** - Predefined aid categories
+- **Deliveries** - Delivery tracking and proof
+- **Organizations** - Trusted organizations
+- **Documents** - Verification documents
+- **AdminLogs** - Audit trail
+- **Donations** - Financial donations (legacy)
 
-- **Admin**: 
-  - Email: `admin@seds.com`
-  - Password: `admin123`
+---
 
-- **Donor**: 
-  - Email: `donor@seds.com`
-  - Password: `donor123`
+## 🚀 Getting Started
 
-- **Receiver**: 
-  - Email: `receiver@seds.com`
-  - Password: `receiver123`
+### Prerequisites
+
+- **Node.js** 18+ and npm
+- **PostgreSQL** 15+
+- **Git**
+
+### Installation
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/afom12/SEDS-Frontend.git
+cd SEDS-Frontend
+```
+
+#### 2. Backend Setup
+
+```bash
+cd backend
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Run database migrations
+npx prisma migrate dev
+
+# Seed aid types
+node prisma/seed-aid-types.js
+
+# Start backend server
+npm run dev
+```
+
+Backend will run on `http://localhost:3000`
+
+#### 3. Frontend Setup
+
+```bash
+# Return to root directory
+cd ..
+
+# Install dependencies
+npm install
+
+# Set up environment variables (optional)
+# Create .env file:
+# VITE_API_URL=http://localhost:3000/api
+
+# Start development server
+npm run dev
+```
+
+Frontend will run on `http://localhost:5173`
+
+### Quick Start (Development Mode)
+
+Development mode automatically bypasses verification checks for testing:
+
+```bash
+# Terminal 1: Backend
+cd backend && npm run dev
+
+# Terminal 2: Frontend
+npm run dev
+```
+
+Visit `http://localhost:5173` and start testing!
+
+---
 
 ## 📁 Project Structure
 
 ```
-src/
-├── components/          # Reusable UI components
-│   ├── Card.jsx
-│   ├── Modal.jsx
-│   ├── Navbar.jsx
-│   ├── Footer.jsx
-│   ├── Sidebar.jsx
-│   ├── StatusBadge.jsx
-│   ├── Stepper.jsx
-│   ├── ProtectedRoute.jsx
-│   ├── ErrorBoundary.jsx      # Error handling
-│   ├── FormField.jsx          # Enhanced form fields
-│   ├── PasswordStrength.jsx   # Password strength indicator
-│   ├── Tooltip.jsx            # Tooltip component
-│   ├── Pagination.jsx         # Pagination component
-│   ├── AdvancedSearch.jsx     # Advanced search/filter
-│   ├── Chart.jsx              # Data visualization
-│   ├── ExportButton.jsx       # Export functionality
-│   ├── ShareButton.jsx        # Social sharing
-│   ├── ThemeToggle.jsx        # Dark mode toggle
-│   ├── KeyboardShortcutsModal.jsx  # Shortcuts help
-│   └── SkipToContent.jsx      # Accessibility skip link
-├── context/            # React Context providers
-│   ├── AuthContext.jsx
-│   ├── ToastContext.jsx
-│   └── ThemeContext.jsx       # Dark mode management
-├── hooks/               # Custom React hooks
-│   └── useKeyboardShortcuts.js
-├── utils/               # Utility functions
-│   ├── storage.js       # LocalStorage utilities
-│   ├── validators.js    # Form validation
-│   ├── export.js        # Export utilities
-│   ├── performance.js   # Performance helpers
-│   └── devUtils.js      # Development utilities
-├── i18n/                # Internationalization
-│   ├── config.js
-│   └── locales/
-│       ├── en.json      # English translations
-│       └── am.json      # Amharic translations
-├── services/            # Service layer
-│   └── dataService.js   # Mock API service
-├── data/               # Mock data
-│   └── mockData.js
-├── pages/              # Page components
-│   ├── Landing.jsx
-│   ├── auth/
-│   │   ├── Login.jsx
-│   │   └── Register.jsx
-│   ├── donor/
-│   │   ├── DonorDashboard.jsx
-│   │   ├── BrowseRequests.jsx
-│   │   ├── RequestDetails.jsx
-│   │   └── DonationHistory.jsx
-│   ├── receiver/
-│   │   ├── ReceiverDashboard.jsx
-│   │   ├── SubmitRequest.jsx
-│   │   ├── RequestStatus.jsx
-│   │   └── Profile.jsx
-│   └── admin/
-│       ├── AdminDashboard.jsx
-│       ├── ReviewRequests.jsx
-│       ├── UserManagement.jsx
-│       ├── Analytics.jsx
-│       └── ActivityLogs.jsx
-├── App.jsx             # Main app component with routing
-├── main.jsx            # Entry point
-└── index.css           # Global styles
+SEDS_Frontend/
+├── backend/                 # Backend API server
+│   ├── controllers/         # Request handlers
+│   ├── routes/             # API routes
+│   ├── middleware/         # Auth, validation, error handling
+│   ├── utils/              # Utilities (JWT, matching, urgency)
+│   ├── prisma/             # Database schema and migrations
+│   └── server.js           # Express app entry point
+│
+├── src/                    # Frontend React application
+│   ├── components/         # Reusable UI components
+│   ├── pages/             # Page components
+│   │   ├── aid-seeker/    # Aid seeker pages
+│   │   ├── aid-provider/  # Aid provider pages
+│   │   ├── admin/         # Admin pages
+│   │   └── auth/          # Authentication pages
+│   ├── services/          # API service layer
+│   ├── context/           # React context (Auth, Toast)
+│   ├── config/            # Configuration files
+│   ├── utils/             # Frontend utilities
+│   └── App.jsx            # Main app component
+│
+├── public/                # Static assets
+├── docs/                 # Documentation files
+└── README.md            # This file
 ```
 
-## 🎨 Design System
+---
 
-### Colors
-- **Primary**: Deep Blue (#2563eb) - Trust & stability
-- **Secondary**: Soft Green (#10b981) - Hope & giving
-- **Accent**: Teal (#14b8a6) - Emphasis
-- **Background**: Off-white (#f9fafb)
-- **Text**: Dark gray (#374151)
+## 📚 API Documentation
 
-### Design Principles
-- Rounded corners
-- Soft shadows
-- Clear typography
-- Accessible contrast
-- No judgment policy
+### Authentication Endpoints
 
-## 🔒 Role-Based Access
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+- `POST /api/auth/refresh` - Refresh access token
+- `GET /api/auth/me` - Get current user
 
-### Donor
-- Browse verified donation requests
-- Make anonymous or public donations
-- Track donation status
-- View donation history
+### Aid Coordination Endpoints
 
-### Receiver
-- Submit donation requests
-- Upload supporting documents
-- View request status
-- See received donations (anonymous)
+- `GET /api/aid-types` - List all aid types
+- `POST /api/requests` - Create aid request
+- `GET /api/requests` - List requests (with filters)
+- `POST /api/aid-offers` - Create aid offer
+- `GET /api/aid-offers` - List available offers
+- `POST /api/deliveries` - Create delivery record
+- `GET /api/deliveries` - List deliveries
 
-### Admin
-- User management
-- Request verification
-- Donation monitoring
-- Analytics and reports
+### Admin Endpoints
 
-## ✨ Implemented Enhancements
+- `GET /api/admin/users` - List users
+- `POST /api/admin/users/:id/verify` - Verify user
+- `GET /api/admin/requests` - List requests
+- `POST /api/admin/requests/:id/approve` - Approve request
+- `GET /api/admin/analytics` - Platform analytics
 
-### Error Handling & Validation
-- ✅ Error Boundary component for graceful error handling
-- ✅ Real-time form validation with visual feedback
-- ✅ Password strength indicator
-- ✅ Comprehensive validation utilities
+### Cron Jobs
 
-### User Experience
-- ✅ Dark mode with system preference detection
-- ✅ Keyboard shortcuts (Ctrl+K, Alt+D, Alt+H, Alt+L, Esc)
-- ✅ Advanced search with multi-filter support
-- ✅ Pagination for large data sets
-- ✅ Tooltips for contextual help
-- ✅ Enhanced empty states with actionable CTAs
-- ✅ Loading skeletons and smooth transitions
-- ✅ Social sharing functionality
-- ✅ Export to CSV, JSON, and PDF
+- `GET /api/cron/update-food-urgency` - Update food urgency levels
+- `GET /api/cron/expire-items` - Mark expired items
+- `GET /api/cron/run-all` - Run all cron jobs
 
-### Accessibility
-- ✅ ARIA labels and roles throughout
-- ✅ Keyboard navigation support
-- ✅ Skip to main content link
-- ✅ Screen reader support
-- ✅ Focus management
-- ✅ High contrast support
+**Note**: Cron endpoints require `X-API-Key` header.
 
-### Performance
-- ✅ Code splitting with React.lazy
-- ✅ Lazy loading for all routes
-- ✅ Debounced search inputs
-- ✅ Memoization utilities
-- ✅ Optimized rendering
+---
 
-### Data Visualization
-- ✅ Bar charts
-- ✅ Line charts
-- ✅ Pie charts
-- ✅ Responsive chart components
+## 🚢 Deployment
 
-### Internationalization
-- ✅ Full English translation
-- ✅ Full Amharic translation
-- ✅ Language persistence
-- ✅ Language toggle in navbar
+### Environment Variables
 
-## 🔌 Backend Integration
+#### Backend (.env)
 
-The frontend is now configured to work with your backend API. The integration includes:
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/seds_db"
 
-### Setup
+# JWT
+JWT_SECRET="your-secret-key"
+JWT_REFRESH_SECRET="your-refresh-secret"
+JWT_EXPIRES_IN="15m"
+JWT_REFRESH_EXPIRES_IN="7d"
 
-1. **Environment Configuration**
-   - Create a `.env` file in the root directory
-   - Add your backend API URL:
-     ```
-     VITE_API_URL=http://localhost:3000/api
-     ```
-   - Replace with your actual backend URL
+# Server
+PORT=3000
+NODE_ENV=production
+FRONTEND_URL=https://your-frontend-domain.com
 
-2. **API Client**
-   - Located in `src/services/apiClient.js`
-   - Handles authentication tokens automatically
-   - Includes error handling and timeout management
-   - Automatically redirects to login on 401 errors
+# Cron
+CRON_API_KEY="your-cron-api-key"
 
-3. **API Configuration**
-   - Endpoints are configured in `src/config/api.js`
-   - Update endpoints to match your backend API structure
-
-### Features
-
-- ✅ **Automatic Fallback**: Falls back to mock data if backend is unavailable
-- ✅ **Token Management**: Automatic JWT token handling
-- ✅ **Error Handling**: Comprehensive error handling with user-friendly messages
-- ✅ **Request Timeout**: Configurable timeout for API requests
-- ✅ **Authentication**: Integrated with AuthContext for seamless auth flow
-
-### API Endpoints Expected
-
-The frontend expects the following API structure:
-
-**Authentication:**
-- `POST /auth/login` - User login
-- `POST /auth/register` - User registration
-- `POST /auth/logout` - User logout
-- `GET /auth/me` - Get current user
-
-**Donation Requests:**
-- `GET /requests` - Get all donation requests
-- `GET /requests/:id` - Get request by ID
-- `POST /requests` - Submit new request
-- `POST /requests/:id/approve` - Approve request (admin)
-- `POST /requests/:id/reject` - Reject request (admin)
-- `GET /requests/receiver` - Get receiver's requests
-
-**Donations:**
-- `GET /donations` - Get all donations
-- `POST /donations` - Create donation
-- `GET /donations/history` - Get donation history
-
-**Users (Admin):**
-- `GET /users` - Get all users
-- `GET /users/:id` - Get user by ID
-
-**Admin:**
-- `GET /admin/analytics` - Get analytics data
-- `GET /admin/activity-logs` - Get activity logs
-- `GET /admin/stats` - Get statistics
-
-### Response Format
-
-The API should return responses in this format:
-
-```json
-{
-  "success": true,
-  "data": { ... },
-  "message": "Optional message"
-}
+# Bcrypt
+BCRYPT_ROUNDS=12
 ```
 
-For errors:
-```json
-{
-  "success": false,
-  "error": "Error message",
-  "message": "Error message"
-}
+#### Frontend (.env)
+
+```env
+VITE_API_URL=https://your-backend-domain.com/api
 ```
 
-### Authentication
+### Production Build
 
-- Tokens are stored in `sessionStorage` by default
-- Include token in `Authorization: Bearer <token>` header
-- Token is automatically included in all API requests
+```bash
+# Frontend
+npm run build
+# Output: dist/
 
-## 🎉 Production Features (NEW!)
+# Backend
+# Use PM2 or similar process manager
+pm2 start backend/server.js --name seds-backend
+```
 
-### ✅ Implemented
-- ✅ **Full Backend API** - Node.js + Express + PostgreSQL
-- ✅ **Payment Integration** - Stripe (test mode) ready
-- ✅ **Verification System** - Complete admin workflow
-- ✅ **Transparency Page** - Public donation ledger
-- ✅ **Audit Logs** - Immutable admin action tracking
-- ✅ **JWT Authentication** - Access + refresh tokens
-- ✅ **Role-Based Security** - Admin, Donor, Receiver
-- ✅ **Document Upload** - Backend ready
+### Database Migration
 
-### 🚧 Future Enhancements
-- Real-time notifications
-- Email notifications
-- Chapa payment integration (Ethiopia)
-- Push notifications
-- Real-time chat support
-- Mobile app development
-- Advanced reporting
+```bash
+cd backend
+npx prisma migrate deploy
+```
 
-## 📝 License
+---
 
-This project is created for educational purposes.
+## 🤝 Contributing
 
-## 📚 Documentation
+Contributions are welcome! Please follow these steps:
 
-- **[QUICK_START.md](./QUICK_START.md)** - Get started in 5 minutes
-- **[PRODUCTION_UPGRADE.md](./PRODUCTION_UPGRADE.md)** - Complete upgrade guide
-- **[UPGRADE_SUMMARY.md](./UPGRADE_SUMMARY.md)** - What's new summary
-- **[backend/README.md](./backend/README.md)** - Backend API documentation
-- **[BACKEND_INTEGRATION.md](./BACKEND_INTEGRATION.md)** - Frontend-backend integration
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 👥 Contributing
+### Development Guidelines
 
-This is a production-grade platform suitable for:
-- ✅ Final-year software engineering projects
-- ✅ Portfolio demonstrations
-- ✅ Academic evaluation
-- ✅ Real-world deployment (with proper security audit)
+- Follow existing code style
+- Write meaningful commit messages
+- Add comments for complex logic
+- Update documentation for new features
+- Test thoroughly before submitting
 
-**Backend is fully integrated!** See [QUICK_START.md](./QUICK_START.md) to get started.
+---
 
+## 📄 License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+---
 
+## 👥 Authors
 
+- **Development Team** - [afom12](https://github.com/afom12)
+
+---
+
+## 🙏 Acknowledgments
+
+- Built for final-year software engineering project
+- Designed with dignity-first principles for humanitarian aid
+- Inspired by real-world aid coordination needs
+
+---
+
+## 📞 Support
+
+For issues, questions, or contributions:
+
+- **GitHub Issues**: [Create an issue](https://github.com/afom12/SEDS-Frontend/issues)
+- **Documentation**: See `/docs` folder for detailed guides
+
+---
+
+## 🔗 Related Documentation
+
+- [Setup Instructions](SETUP_INSTRUCTIONS.md)
+- [Backend Setup](backend/README.md)
+- [Food Urgency System](FOOD_URGENCY_SYSTEM.md)
+- [Development Mode Guide](DEV_MODE_GUIDE.md)
+- [API Integration Guide](FRONTEND_BACKEND_INTEGRATION.md)
+
+---
+
+<div align="center">
+
+**Made with ❤️ for transparent humanitarian aid coordination**
+
+[⬆ Back to Top](#-seds---transparent-aid-coordination-platform)
+
+</div>
